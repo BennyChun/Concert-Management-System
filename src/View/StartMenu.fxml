@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.StartMenu">
+   <children>
+      <Text layoutX="133.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Concert Manager">
+         <font>
+            <Font name="Maiandra GD" size="44.0" />
+         </font>
+      </Text>
+      <Text layoutX="222.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select User Type:">
+         <font>
+            <Font name="Maiandra GD" size="21.0" />
+         </font>
+      </Text>
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="83.0" layoutY="261.0" style="-fx-background-color: #ffffff;" text="Manager">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="393.0" layoutY="261.0" style="-fx-background-color: #ffffff;" text="Customer">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
