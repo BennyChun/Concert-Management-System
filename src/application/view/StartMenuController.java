@@ -9,8 +9,12 @@ public class StartMenuController extends AbstractController {
 
     @FXML
     private void handleManager(){
-        System.out.println("hello world");
         _mainApp.initManagerLogin();
+    }
+
+    @FXML
+    private void handleCustomer(){
+        _mainApp.initCustomerLogin();
     }
 
 }

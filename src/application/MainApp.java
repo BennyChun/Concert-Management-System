@@ -70,6 +70,50 @@ public class MainApp extends Application {
                 }
         }
 
+        public void initCustomerLogin(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/CustomerLogin.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+
+                        //give stage select controller access to the main app
+                        CustomerLoginController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
+
+        public void initOptionSelect(String uniqueIdentifier){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/OptionSelect.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+
+                        //give stage select controller access to the main app
+                        OptionSelectController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                        controller.setUniqueIdentifier(uniqueIdentifier);
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
 
         /**
          * when this method gets called

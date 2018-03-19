@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.OptionSelectController">
+   <children>
+      <VBox layoutX="125.0" layoutY="100.0" prefHeight="200.0" prefWidth="350.0" spacing="30.0">
+         <children>
+            <JFXButton buttonType="RAISED" focusTraversable="false" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Edit Customer Details" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Reserve Tickets" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Search" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Advanced Search" />
+         </children>
+         <padding>
+            <Insets left="75.0" />
+         </padding>
+      </VBox>
+      <Text layoutX="101.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select One of the Following Options">
+         <font>
+            <Font name="Maiandra GD" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID: ">
+         <font>
+            <Font name="Maiandra GD" size="17.0" />
+         </font>
+      </Text>
+      <Text fx:id="uniqueIdentifier" layoutX="42.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1084233439">
+         <font>
+            <Font name="Maiandra GD" size="17.0" />
+         </font>
+      </Text>
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="534.0" layoutY="361.0" onAction="#handleLogout" style="-fx-background-color: #ffffff;" text="Logout" />
+   </children>
+</AnchorPane>
