@@ -1,13 +1,14 @@
 package application.database;
 
 import java.sql.*;
-import oracle.jdbc.*;
-import oracle.sql.*;
 
 public class DatabaseManager {
 
     private static Connection con;
 
+    /**
+     * Connects to database and sets field con for database use
+     */
     public static void initializeConnection() {
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -19,6 +20,9 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Closes connection to database
+     */
     public static void closeConnection() {
         try {
             con.close();
@@ -26,5 +30,4 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
 }
