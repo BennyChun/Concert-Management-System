@@ -43,6 +43,7 @@ public class DatabaseManager {
         try {
             stmt = con.createStatement();
             rowCount = stmt.executeUpdate(updateString);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,5 +64,17 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return results;
+    }
+
+    /**
+     * Closes statement to free up memory (caller's job to close statement after parsing a query)
+     *
+     */
+    public static void closeStatement () {
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
