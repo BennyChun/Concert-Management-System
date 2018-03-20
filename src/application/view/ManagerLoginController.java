@@ -16,6 +16,7 @@ public class ManagerLoginController extends AbstractController {
     private void handleLogin(){
         System.out.println(managerNumber.getText() + " " + password.getText() );
         if(password.getText().equals("pw")){
+            _mainApp.isManager = true;
             _mainApp.initOptionSelect(managerNumber.getText());
         } else{
             Alert alert = new Alert(Alert.AlertType.WARNING);

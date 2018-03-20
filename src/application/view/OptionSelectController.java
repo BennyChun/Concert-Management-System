@@ -30,6 +30,38 @@ public class OptionSelectController extends AbstractController {
 
     }
 
+    @FXML
+    private void handleEditCustDetails(){
+        _mainApp.initEditCustomerDetails();
+    }
+
+    @FXML
+    private void handleReserveTicket(){
+        _mainApp.initReserveTickets();
+    }
+
+    @FXML
+    private void handleSearch(){
+        _mainApp.initSearch();
+    }
+
+    @FXML
+    private void handleAdvancedSearch(){
+        _mainApp.initAdvancedSearch();
+    }
+
+    @FXML
+    private void handleAddData() {
+        if (_mainApp.isManager) {
+            _mainApp.initAddData();
+        } else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Access Denied");
+            alert.setContentText("Customers cannot add data!");
+            alert.showAndWait();
+        }
+    }
     public void setUniqueIdentifier(String uniqueID){
         uniqueIdentifier.setText(uniqueID);
     }

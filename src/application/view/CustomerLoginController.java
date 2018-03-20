@@ -28,6 +28,7 @@ public class CustomerLoginController extends AbstractController {
 
     @FXML
     private void handleContinue(){
+        _mainApp.isManager = false;
         if (!isNewCust) {
             System.out.println(customerNumberField.getText());
             _mainApp.initOptionSelect(customerNumberField.getText());

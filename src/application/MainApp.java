@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -18,6 +17,8 @@ public class MainApp extends Application {
 
         private Stage _primaryStage;
         private AnchorPane _startMenu;
+        public Boolean isManager = true;
+        public String globalID;
 
         @Override
         public void start(Stage primaryStage) {
@@ -110,11 +111,116 @@ public class MainApp extends Application {
                         OptionSelectController controller = loader.getController();
                         controller.setMainApp(this);//this will set the main app scene to the stage select scene
                         controller.setUniqueIdentifier(uniqueIdentifier);
+                        globalID = uniqueIdentifier;
                 }catch(IOException e){
                         e.printStackTrace();
                 }
         }
 
+        public void initEditCustomerDetails(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/EditCustomerDetails.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+                        //give stage select controller access to the main app
+                        EditCustomerDetailsController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
+
+        public void initReserveTickets(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/ReserveTickets.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+                        //give stage select controller access to the main app
+                        ReserveTicketsController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
+
+        public void initSearch(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/SearchScreen.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+                        //give stage select controller access to the main app
+                        SearchScreenController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
+
+        public void initAdvancedSearch(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/AdvancedSearchScreen.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+                        //give stage select controller access to the main app
+                        AdvancedSearchScreenController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
+
+        public void initAddData(){
+                try {
+                        //load start menu from fxml file.
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(MainApp.class.getResource("view/AddDataScreen.fxml"));
+                        AnchorPane _playSelect = (AnchorPane) loader.load();
+
+                        // Show the scene containing the start menu
+                        Scene scene = new Scene(_playSelect);
+                        _primaryStage.setScene(scene);
+                        _primaryStage.show();
+                        _primaryStage.setResizable(false);
+
+                        //give stage select controller access to the main app
+                        AddDataScreenController controller = loader.getController();
+                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                }catch(IOException e){
+                        e.printStackTrace();
+                }
+        }
         /**
          * when this method gets called
          * it closes the primaryStage
