@@ -1,10 +1,18 @@
 package application.view;
 
+import application.database.DatabaseManager;
 import application.model.Customer;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditCustomerDetailsController extends AbstractController {
 
@@ -18,11 +26,15 @@ public class EditCustomerDetailsController extends AbstractController {
     @FXML private TableView<String> customerTable;
     @FXML private TableColumn<String, String> custIDColumn;
 
+    private StringProperty custIDProperty;
+
     @FXML
     private void initialize(){
-        customerTable.getSelectionModel().selectedItemProperty().addListener()(
+        custIDColumn.setCellValueFactory(cellData -> cellData.getValue().getCustID());
+        getCustID();
+        customerTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    showCustomerID(newValue)
+                    showCustomerID(newValue);
                 });
     }
 
@@ -42,4 +54,27 @@ public class EditCustomerDetailsController extends AbstractController {
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
+    private List<String> getCustIDQuery() {
+        String sql = "SELECT CUSTOMERID FROM CUSTOMER";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        List<String> custIDArray = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                String custID = rs.getString(1);
+                custIDArray.add(custID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return custIDArray;
+    }
+
+    public StringProperty getCustID(){
+        List<String> idArray = getCustIDQuery();
+
+        SimpleStringProperty x = new SimpleStringProperty(idArray.get(0));
+        return x;
+
+    }
 }
