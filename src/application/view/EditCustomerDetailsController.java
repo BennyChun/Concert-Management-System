@@ -4,10 +4,13 @@ import application.database.DatabaseManager;
 import application.model.Customer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,58 +26,46 @@ public class EditCustomerDetailsController extends AbstractController {
     @FXML private TextField phoneNumberField;
     @FXML private TextField dobField;
 
-    @FXML private TableView<String> customerTable;
-    @FXML private TableColumn<String, String> custIDColumn;
+    @FXML private TableView<Customer> customerTable;
+    @FXML private TableColumn custIDColumn;
 
-    private StringProperty custIDProperty;
+    private ObservableList<Customer> data =  FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
-        custIDColumn.setCellValueFactory(cellData -> cellData.getValue().getCustID());
-        getCustID();
-        customerTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    showCustomerID(newValue);
-                });
+        custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("Customer ID"));
+        customerTable.setItems(data);
     }
 
-    private void showCustomerID(String custID){
-        if(custID != null){
-            custIDField.setText();
-            custNameField.setText();
-            addressField.setText();
-            emailField.setText();
-            phoneNumberField.setText();
-            dobField.setText();
-        }
-    }
+//    private void showCustomerID(String custID){
+//        if(custID != null){
+//            custIDField.setText();
+//            custNameField.setText();
+//            addressField.setText();
+//            emailField.setText();
+//            phoneNumberField.setText();
+//            dobField.setText();
+//        }
+//    }
 
     @FXML
     private void handleBack(){
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
-    private List<String> getCustIDQuery() {
+    private void setCustomerData () {
         String sql = "SELECT CUSTOMERID FROM CUSTOMER";
         ResultSet rs = DatabaseManager.sendQuery(sql);
-        List<String> custIDArray = new ArrayList<>();
         try {
             while (rs.next()) {
                 String custID = rs.getString(1);
-                custIDArray.add(custID);
+                Customer c = new Customer(custID);
+                data.add(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         DatabaseManager.closeStatement();
-        return custIDArray;
     }
 
-    public StringProperty getCustID(){
-        List<String> idArray = getCustIDQuery();
-
-        SimpleStringProperty x = new SimpleStringProperty(idArray.get(0));
-        return x;
-
-    }
 }
