@@ -16,7 +16,7 @@ public class DatabaseManager {
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             con = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@localhost.ugrad.cs.ubc.ca:1522:ug", "ora_t3m0b", "a35437145");
+                    "jdbc:oracle:thin:@localhost:1522:ug", "ora_t3m0b", "a35437145");
             System.out.println("Connection was successful");
 
         } catch (SQLException e) {
