@@ -28,25 +28,14 @@ public class EditCustomerDetailsController extends AbstractController {
 
     @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn custIDColumn;
-
-    private ObservableList<Customer> data =  FXCollections.observableArrayList();
+    private ObservableList<Customer> data = FXCollections.observableArrayList();
 
     @FXML
     private void initialize(){
-        custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("Customer ID"));
+        setCustomerData();
+        custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerID"));
         customerTable.setItems(data);
     }
-
-//    private void showCustomerID(String custID){
-//        if(custID != null){
-//            custIDField.setText();
-//            custNameField.setText();
-//            addressField.setText();
-//            emailField.setText();
-//            phoneNumberField.setText();
-//            dobField.setText();
-//        }
-//    }
 
     @FXML
     private void handleBack(){
@@ -59,11 +48,13 @@ public class EditCustomerDetailsController extends AbstractController {
         try {
             while (rs.next()) {
                 String custID = rs.getString(1);
+                System.out.println(custID);
                 Customer c = new Customer(custID);
                 data.add(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Connection Failed! Check output console");
         }
         DatabaseManager.closeStatement();
     }

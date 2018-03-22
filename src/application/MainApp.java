@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import application.database.DatabaseManager;
 import application.view.StartMenuController;
 import application.view.*;
 import javafx.application.Application;
@@ -230,8 +231,9 @@ public class MainApp extends Application {
         }
 
         public static void main(String[] args) {
+            DatabaseManager.initializeConnection();
+             launch(args);
 
-                launch(args);
         }
 
 

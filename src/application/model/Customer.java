@@ -4,15 +4,15 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Customer {
 
-    private final SimpleStringProperty custID;
+    private final SimpleStringProperty customerID;
 //    private final SimpleStringProperty name;
 //    private final SimpleStringProperty phoneNum;
 //    private final SimpleStringProperty emailAddress;
 //    private final SimpleStringProperty homeAddress;
 //    private final SimpleStringProperty DOB;
 
-    public Customer (String custID) {
-        this.custID = new SimpleStringProperty(custID);
+    public Customer (String customerID) {
+        this.customerID = new SimpleStringProperty(customerID);
     }
 //    public Customer (String custID, String name, String phoneNum, String email, String addr, String DOB) {
 //        this.custID = new SimpleStringProperty(custID);
@@ -30,13 +30,18 @@ public class Customer {
 //        name.set(fName);
 //    }
 //
-//    public String getCustID() {
-//        return custID.get();
-//    }
-//    public void setCustID(String id) {
-//        custID.set(id);
-//    }
-//
+    public String getCustomerID() {
+        return customerID.get();
+    }
+    public void setCustomerID(String id) {
+        customerID.set(id);
+    }
+
+    public SimpleStringProperty customerIDProperty() {
+        return customerID;
+    }
+
+    //
 //    public String getPhoneNum() {
 //        return phoneNum.get();
 //    }
