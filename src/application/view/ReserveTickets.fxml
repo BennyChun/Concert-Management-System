@@ -50,8 +50,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField GridPane.columnIndex="2" />
-            <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="concertNameField" GridPane.columnIndex="2" />
+            <TextField fx:id="ticketIDField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Concert Name" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seat" GridPane.rowIndex="2" />
@@ -59,19 +59,19 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="VIP" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Venue" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date" GridPane.rowIndex="6" />
-            <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <JFXComboBox editable="true" prefHeight="25.0" prefWidth="107.0" visibleRowCount="2" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <JFXDatePicker prefWidth="111.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <JFXComboBox prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXComboBox prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="seatField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="priceField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="venueField" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <JFXComboBox fx:id="isVIP" editable="true" prefHeight="25.0" prefWidth="107.0" visibleRowCount="2" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <JFXDatePicker fx:id="dateField" prefWidth="111.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <JFXComboBox fx:id="priceInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXComboBox fx:id="dateInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
       <HBox layoutX="377.0" layoutY="286.0" prefHeight="100.0" prefWidth="325.0" spacing="75.0">
          <children>
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Reserve" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Search" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleReserve" style="-fx-background-color: #ffffff;" text="Reserve" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleSearch" style="-fx-background-color: #ffffff;" text="Search" />
          </children>
          <padding>
             <Insets left="65.0" top="30.0" />
