@@ -19,45 +19,45 @@
       </Text>
       <HBox layoutX="61.0" layoutY="47.0" prefHeight="41.0" prefWidth="502.0" spacing="70.0">
          <children>
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Concert" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Band" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Artist" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Venue" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleConcert" style="-fx-background-color: #ffffff;" text="Concert" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleBand" style="-fx-background-color: #ffffff;" text="Band" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleArtist" style="-fx-background-color: #ffffff;" text="Artist" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleVenue" style="-fx-background-color: #ffffff;" text="Venue" />
          </children>
          <padding>
             <Insets left="50.0" />
          </padding>
       </HBox>
-      <TableView fx:id="concertTable" layoutX="125.0" layoutY="88.0" prefHeight="288.0" prefWidth="350.0" visible="false">
+      <TableView fx:id="concertTable" focusTraversable="false" layoutX="125.0" layoutY="88.0" prefHeight="288.0" prefWidth="350.0" visible="false">
         <columns>
-          <TableColumn prefWidth="84.14285278320312" text="Concert Name" />
-          <TableColumn prefWidth="65.85714721679688" text="Concert ID" />
-            <TableColumn prefWidth="56.14288330078125" text="Duration" />
-            <TableColumn prefWidth="84.85711669921875" text="Start Date" />
-            <TableColumn prefWidth="54.142822265625" text="19+?" />
+          <TableColumn fx:id="concertNameColumn" prefWidth="84.14285278320312" text="Concert Name" />
+          <TableColumn fx:id="concertIDColumn" prefWidth="65.85714721679688" text="Concert ID" />
+            <TableColumn fx:id="durationColumn" prefWidth="56.14288330078125" text="Duration" />
+            <TableColumn fx:id="startDateColumn" prefWidth="84.85711669921875" text="Start Date" />
+            <TableColumn fx:id="is19PlusColumn" prefWidth="54.142822265625" text="19+?" />
         </columns>
       </TableView>
       <TableView fx:id="bandTable" focusTraversable="false" layoutX="179.0" layoutY="103.0" prefHeight="259.0" prefWidth="241.0" visible="false">
         <columns>
-          <TableColumn prefWidth="75.0" text="Stage Name" />
-          <TableColumn prefWidth="75.0" text="Genre" />
-            <TableColumn prefWidth="90.4285888671875" text="Formed Date" />
+          <TableColumn fx:id="stageNameColumn" prefWidth="75.0" text="Stage Name" />
+          <TableColumn fx:id="genreColumn" prefWidth="75.0" text="Genre" />
+            <TableColumn fx:id="formationDateColumn" prefWidth="90.4285888671875" text="Formed Date" />
         </columns>
       </TableView>
       <TableView fx:id="artistTable" focusTraversable="false" layoutX="137.0" layoutY="103.0" prefHeight="259.0" prefWidth="350.0" visible="false">
         <columns>
-          <TableColumn prefWidth="75.0" text="Artist Name" />
-          <TableColumn prefWidth="114.0" text="Country of Origin" />
-            <TableColumn prefWidth="81.28570556640625" text="Date of Birth" />
-            <TableColumn prefWidth="75.0" text="Stage Name" />
+          <TableColumn fx:id="artistNameColumn" prefWidth="75.0" text="Artist Name" />
+          <TableColumn fx:id="originColumn" prefWidth="114.0" text="Country of Origin" />
+            <TableColumn fx:id="dateOfBirthColumn" prefWidth="81.28570556640625" text="Date of Birth" />
+            <TableColumn fx:id="artistStageNameColumn" prefWidth="75.0" text="Stage Name" />
         </columns>
       </TableView>
       <TableView fx:id="venueTable" focusTraversable="false" layoutX="90.0" layoutY="103.0" prefHeight="259.0" prefWidth="445.0" visible="false">
         <columns>
-          <TableColumn prefWidth="88.14288330078125" text="Venue Name" />
-            <TableColumn prefWidth="59.5714111328125" text="Capacity" />
-            <TableColumn prefWidth="210.4285888671875" text="Street Address" />
-          <TableColumn minWidth="8.85711669921875" prefWidth="85.0" text="City" />
+          <TableColumn fx:id="venueNameColumn" prefWidth="88.14288330078125" text="Venue Name" />
+            <TableColumn fx:id="capacityColumn" prefWidth="59.5714111328125" text="Capacity" />
+            <TableColumn fx:id="streetAddresssColumn" prefWidth="210.4285888671875" text="Street Address" />
+          <TableColumn fx:id="cityColumn" minWidth="8.85711669921875" prefWidth="85.0" text="City" />
         </columns>
       </TableView>
    </children>
