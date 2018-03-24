@@ -22,12 +22,12 @@
       </Text>
       <HBox layoutX="15.0" layoutY="43.0" prefHeight="40.0" prefWidth="571.0" spacing="40.0">
          <children>
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Customer" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Concert" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Venue" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Tickets" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Band" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Artist" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleCustomer" style="-fx-background-color: #ffffff;" text="Customer" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleConcert" style="-fx-background-color: #ffffff;" text="Concert" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleVenue" style="-fx-background-color: #ffffff;" text="Venue" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicket" style="-fx-background-color: #ffffff;" text="Tickets" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleBand" style="-fx-background-color: #ffffff;" text="Band" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleArtist" style="-fx-background-color: #ffffff;" text="Artist" />
          </children>
          <padding>
             <Insets left="25.0" />
@@ -54,13 +54,13 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth" GridPane.rowIndex="5" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <JFXDatePicker GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="customerNameField" GridPane.columnIndex="1" />
+            <TextField fx:id="customerIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleCustomerUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <JFXDatePicker fx:id="dateOfBirthField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <GridPane fx:id="concertGrid" layoutX="200.0" layoutY="132.0" visible="false">
@@ -82,12 +82,12 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Duration" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="19+?" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <JFXDatePicker GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXComboBox prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="concertNameField" GridPane.columnIndex="1" />
+            <TextField fx:id="concertIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="durationField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleConcertUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <JFXDatePicker fx:id="startDateField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXComboBox fx:id="is19PlusField" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <GridPane fx:id="venueGrid" layoutX="200.0" layoutY="147.0" visible="false">
@@ -107,11 +107,11 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacity" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Street Address" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="venueNameField" GridPane.columnIndex="1" />
+            <TextField fx:id="capacityField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="streetAddressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="cityField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleVenueUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
         <JFXButton layoutX="7.0" layoutY="2.0" onAction="#handleBack" text="Back" />
@@ -136,22 +136,22 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Number" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City" GridPane.rowIndex="5" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <TextField fx:id="tickedIDField" GridPane.columnIndex="1" />
+            <TextField fx:id="ticketCityField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="seatNumberField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="9" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="VIP" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cost" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Venue Name" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID" GridPane.rowIndex="6" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="7" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <JFXComboBox prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="ticketCostField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="ticketVenueField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="ticketCustIDField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <JFXComboBox fx:id="ticketIsVIPField" prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available" GridPane.rowIndex="8" />
-            <JFXComboBox prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <JFXComboBox fx:id="isAvailableField" prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <JFXDatePicker fx:id="ticketStartDateField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
       <GridPane fx:id="bandGrid" layoutX="200.0" layoutY="140.0" visible="false">
@@ -169,13 +169,13 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stage Name" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genre" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Formation Date" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXDatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="stageNameField" GridPane.columnIndex="1" />
+            <TextField fx:id="genreField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleBand" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXDatePicker fx:id="formationDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <GridPane fx:id="artistGrid" layoutX="210.0" layoutY="157.0" visible="false">
+      <GridPane fx:id="artistGrid" layoutX="210.0" layoutY="157.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -192,11 +192,11 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country of Origin" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stage Name" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <JFXDatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="artistNameField" GridPane.columnIndex="1" />
+            <TextField fx:id="artistStageNameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="originField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleArtistUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <JFXDatePicker fx:id="artistDateOfBirthField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
     </children>

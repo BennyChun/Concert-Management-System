@@ -27,7 +27,7 @@ public class ReserveTicketsController extends AbstractController {
                 "Yes",
                 "No"
         ));
-        ObservableList inequalities = FXCollections.observableArrayList(
+        ObservableList<String> inequalities = FXCollections.observableArrayList(
                 "=",
                 ">",
                 "<",

@@ -22,7 +22,7 @@ public class SearchScreenController extends AbstractController{
     @FXML private TableColumn formationDateColumn;
 
 //==========================================================================================
-    @FXML private TableView artistTable;W
+    @FXML private TableView artistTable;
     @FXML private TableColumn artistNameColumn;
     @FXML private TableColumn dateOfBirthColumn;
     @FXML private TableColumn originColumn;
