@@ -1,5 +1,6 @@
 package application.view;
 
+import application.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -28,7 +29,7 @@ public class CustomerLoginController extends AbstractController {
 
     @FXML
     private void handleContinue(){
-        _mainApp.isManager = false;
+        User.getInstance().initManager(false);
         if (!isNewCust) {
             System.out.println(customerNumberField.getText());
             _mainApp.initOptionSelect(customerNumberField.getText());

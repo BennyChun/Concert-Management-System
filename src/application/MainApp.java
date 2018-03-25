@@ -112,7 +112,7 @@ public class MainApp extends Application {
                         OptionSelectController controller = loader.getController();
                         controller.setMainApp(this);//this will set the main app scene to the stage select scene
                         controller.setUniqueIdentifier(uniqueIdentifier);
-                        globalID = uniqueIdentifier;
+                        User.getInstance().initGlobalID(uniqueIdentifier);
                 }catch(IOException e){
                         e.printStackTrace();
                 }
@@ -133,7 +133,7 @@ public class MainApp extends Application {
 
                         //give stage select controller access to the main app
                         EditCustomerDetailsController controller = loader.getController();
-                        controller.setMainApp(this);//this will set the main app scene to the stage select scene
+                        controller.setMainApp(this); //this will set the main app scene to the stage select scene
                 }catch(IOException e){
                         e.printStackTrace();
                 }
@@ -233,8 +233,9 @@ public class MainApp extends Application {
         public static void main(String[] args) {
             DatabaseManager.initializeConnection();
              launch(args);
-
         }
+
+
 
 
 }

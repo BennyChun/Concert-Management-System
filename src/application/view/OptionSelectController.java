@@ -1,6 +1,7 @@
 package application.view;
 
 
+import application.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -23,7 +24,7 @@ public class OptionSelectController extends AbstractController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             // ... user chose OK
-            _mainApp.initStartMenu();
+            _mainApp.close();
         } else {
             // ... user chose CANCEL or closed the dialog
         }
@@ -52,7 +53,7 @@ public class OptionSelectController extends AbstractController {
 
     @FXML
     private void handleAddData() {
-        if (_mainApp.isManager) {
+        if (User.getInstance().getIsManager()) {
             _mainApp.initAddData();
         } else{
             Alert alert = new Alert(Alert.AlertType.WARNING);

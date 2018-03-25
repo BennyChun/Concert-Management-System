@@ -1,5 +1,7 @@
 package application.view;
 
+import application.MainApp;
+import application.User;
 import application.database.DatabaseManager;
 import application.model.Customer;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,9 +30,10 @@ public class EditCustomerDetailsController extends AbstractController {
     @FXML private TableColumn custIDColumn;
     private ObservableList<Customer> data = FXCollections.observableArrayList();
 
+
     @FXML
     private void initialize(){
-        setCustomerData();
+        setCustomerDataForTable();
         custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerID"));
         customerTable.setItems(data);
     }
@@ -40,19 +43,28 @@ public class EditCustomerDetailsController extends AbstractController {
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
-    private void setCustomerData () {
-        String sql = "select cust_id from customers";
+
+    /**
+     * Sets edit customer details data for table to populate
+     */
+    private void setCustomerDataForTable () {
+        String sql;
+        if (User.getInstance().getIsManager()) {
+            sql = "select cust_id from customers";
+        } else {
+            sql = "select cust_id from customers where cust_id = " +  "'" + User.getInstance().getGlobalID() + "'";
+        }
         ResultSet rs = DatabaseManager.sendQuery(sql);
         try {
             while (rs.next()) {
                 String custID = rs.getString(1);
+
                 Customer c = new Customer(custID);
-                data.add(c);
-            }
+                data.add(c); }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Connection Failed! Check output console");
-        }
+                e.printStackTrace();
+                System.out.println("Connection Failed! Check output console");
+            }
         DatabaseManager.closeStatement();
     }
 

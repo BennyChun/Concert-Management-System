@@ -1,5 +1,6 @@
 package application.view;
 
+import application.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -16,7 +17,7 @@ public class ManagerLoginController extends AbstractController {
     private void handleLogin(){
         System.out.println(managerNumber.getText() + " " + password.getText() );
         if(password.getText().equals("pw")){
-            _mainApp.isManager = true;
+            User.getInstance().initManager(true);
             _mainApp.initOptionSelect(managerNumber.getText());
         } else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
