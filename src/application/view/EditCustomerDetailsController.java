@@ -14,8 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EditCustomerDetailsController extends AbstractController {
 
@@ -43,12 +41,11 @@ public class EditCustomerDetailsController extends AbstractController {
     }
 
     private void setCustomerData () {
-        String sql = "SELECT CUSTOMERID FROM CUSTOMER";
+        String sql = "select cust_id from customers";
         ResultSet rs = DatabaseManager.sendQuery(sql);
         try {
             while (rs.next()) {
                 String custID = rs.getString(1);
-                System.out.println(custID);
                 Customer c = new Customer(custID);
                 data.add(c);
             }

@@ -1,7 +1,5 @@
 package application.database;
 
-import application.model.Customer;
-
 import java.sql.*;
 
 public class DatabaseManager {
