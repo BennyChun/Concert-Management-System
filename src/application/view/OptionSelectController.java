@@ -46,10 +46,10 @@ public class OptionSelectController extends AbstractController {
         _mainApp.initSearch();
     }
 
-    @FXML
-    private void handleAdvancedSearch(){
-        _mainApp.initAdvancedSearch();
-    }
+//    @FXML
+//    private void handleAdvancedSearch(){
+//        _mainApp.initAdvancedSearch();
+//    }
 
     @FXML
     private void handleAddData() {
