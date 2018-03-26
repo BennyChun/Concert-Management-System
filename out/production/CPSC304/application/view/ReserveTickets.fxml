@@ -68,6 +68,7 @@
             <JFXComboBox fx:id="priceInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXComboBox fx:id="dateInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Group By" GridPane.rowIndex="7" />
+            <JFXComboBox fx:id="groupByOption" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
          </children>
       </GridPane>
       <HBox layoutX="377.0" layoutY="323.0" prefHeight="48.0" prefWidth="325.0" spacing="75.0">

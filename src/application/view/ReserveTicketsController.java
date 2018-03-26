@@ -19,6 +19,7 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML private ComboBox<String> priceInequality;
     @FXML private ComboBox<String> dateInequality;
+    @FXML private ComboBox<String> groupByOption;
 
 
     @FXML
@@ -27,15 +28,27 @@ public class ReserveTicketsController extends AbstractController {
                 "Yes",
                 "No"
         ));
-        ObservableList<String> inequalities = FXCollections.observableArrayList(
+        priceInequality.setItems(FXCollections.observableArrayList(
+                "=",
+                ">",
+                "<",
+                ">=",
+                "<=",
+                "Highest",
+                "Lowest"
+        ));
+        dateInequality.setItems(FXCollections.observableArrayList(
                 "=",
                 ">",
                 "<",
                 ">=",
                 "<="
-        );
-        priceInequality.setItems(inequalities);
-        dateInequality.setItems(inequalities);
+        ));
+        groupByOption.setItems(FXCollections.observableArrayList(
+                "Venue Name",
+                "Concert Name",
+                "Venue City"
+        ));
 
     }
 
