@@ -49,7 +49,6 @@ public class ReserveTicketsController extends AbstractController {
                 "Concert Name",
                 "Venue City"
         ));
-
     }
 
     @FXML

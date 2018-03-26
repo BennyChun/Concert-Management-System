@@ -87,3 +87,9 @@ CREATE TABLE sells (
 
 grant select on sells to public;
 
+CREATE TABLE concert_manager (
+	username VARCHAR(20) NOT NULL,
+	PRIMARY KEY (username)
+)
+
+grant select on concert_manger to public;
