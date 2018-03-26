@@ -34,6 +34,7 @@ public class CustomerLoginController extends AbstractController {
             System.out.println(customerNumberField.getText());
             _mainApp.initOptionSelect(customerNumberField.getText());
         } else if(isNewCust){
+            // TODO : Check fields and insert new tuple SQL
             // need to store these details into SQL DB
             System.out.println(nameField.getText());
             System.out.println(addressField.getText());
