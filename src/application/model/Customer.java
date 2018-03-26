@@ -86,7 +86,7 @@ public class Customer {
     }
 
     public String getDOB() {
-        return emailAddress.get();
+        return DOB.get();
     }
     public void setDOB(String birthday) {
         DOB.set(birthday);

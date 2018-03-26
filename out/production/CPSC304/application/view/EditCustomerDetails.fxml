@@ -45,7 +45,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email Address" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date of Birth" GridPane.rowIndex="5" />
-            <TextField fx:id="custIDField" GridPane.columnIndex="1" />
+            <TextField fx:id="custIDField" editable="false" GridPane.columnIndex="1" />
             <TextField fx:id="custNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -53,7 +53,7 @@
             <TextField fx:id="dobField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="375.0" layoutY="279.0" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Update">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="375.0" layoutY="279.0" onAction="#handleUpdate" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Update">
          <font>
             <Font size="13.0" />
          </font>
