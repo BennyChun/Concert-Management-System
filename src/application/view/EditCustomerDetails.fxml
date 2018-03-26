@@ -58,6 +58,6 @@
             <Font size="13.0" />
          </font>
       </JFXButton>
-      <CheckBox fx:id="frequentCustomerBox" layoutX="212.0" layoutY="339.0" mnemonicParsing="false" text="Show Frequent Customers" />
+      <CheckBox fx:id="frequentCustomerBox" layoutX="212.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleFrequentCustomers" text="Show Frequent Customers" />
    </children>
 </AnchorPane>

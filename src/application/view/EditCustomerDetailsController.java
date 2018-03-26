@@ -30,6 +30,7 @@ public class EditCustomerDetailsController extends AbstractController {
     @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn custIDColumn;
     private ObservableList<Customer> data = FXCollections.observableArrayList();
+    private ObservableList<Customer> frequentUserData = FXCollections.observableArrayList();
 
 
     @FXML
@@ -55,6 +56,21 @@ public class EditCustomerDetailsController extends AbstractController {
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
+    @FXML
+    private void handleFrequentCustomers(){
+        if(frequentCustomerBox.isSelected()){
+            setFrequentUserData();
+            customerTable.setItems(frequentUserData);
+        } else if(!frequentCustomerBox.isSelected()){
+            customerTable.setItems(data);
+        }
+
+    }
+
+    private void setFrequentUserData(){
+        String sql = "";
+        
+    }
 
     /**
      * Sets edit customer details data for table to populate
