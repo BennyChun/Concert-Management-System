@@ -180,7 +180,7 @@
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleBandDelete" style="-fx-background-color: #ffffff;" text="Delete" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <GridPane fx:id="artistGrid" layoutX="210.0" layoutY="157.0">
+      <GridPane fx:id="artistGrid" layoutX="210.0" layoutY="157.0" visible="false">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
