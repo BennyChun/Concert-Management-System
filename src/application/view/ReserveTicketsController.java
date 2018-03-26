@@ -60,7 +60,7 @@ public class ReserveTicketsController extends AbstractController {
         System.out.println(priceField.getText());
         System.out.println(venueField.getText());
         System.out.println(isVIP.getEditor().getText());
-        System.out.println(dateField.getValue());
+        System.out.println(dateField.getValue().toString());
 
         System.out.println(priceInequality.getEditor().getText());
         System.out.println(dateInequality.getEditor().getText());
