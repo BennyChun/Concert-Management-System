@@ -113,6 +113,7 @@ public class MainApp extends Application {
                         controller.setMainApp(this);//this will set the main app scene to the stage select scene
                         controller.setUniqueIdentifier(uniqueIdentifier);
                         User.getInstance().initGlobalID(uniqueIdentifier);
+                        globalID = User.getInstance().getGlobalID();
                 }catch(IOException e){
                         e.printStackTrace();
                 }

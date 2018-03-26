@@ -14,7 +14,7 @@
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleEditCustDetails" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Edit Customer Details" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleReserveTicket" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Reserve Tickets" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleSearch" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Search" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleAddData" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Add Data" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleAddData" prefWidth="200.0" style="-fx-background-color: #ffffff;" text="Modify Data" />
          </children>
          <padding>
             <Insets left="75.0" />
