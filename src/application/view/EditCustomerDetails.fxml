@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -52,10 +53,11 @@
             <TextField fx:id="dobField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="353.0" layoutY="293.0" prefHeight="46.0" prefWidth="122.0" style="-fx-background-color: #ffffff;" text="Update">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="375.0" layoutY="279.0" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Update">
          <font>
-            <Font size="21.0" />
+            <Font size="13.0" />
          </font>
       </JFXButton>
+      <CheckBox fx:id="frequentCustomerBox" layoutX="212.0" layoutY="339.0" mnemonicParsing="false" text="Show Frequent Customers" />
    </children>
 </AnchorPane>

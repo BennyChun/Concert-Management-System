@@ -134,6 +134,36 @@ public class AddDataScreenController extends AbstractController {
 
 
     @FXML
+    private void handleCustomerDelete(){
+
+    }
+
+    @FXML
+    private void handleConcertDelete(){
+
+    }
+
+    @FXML
+    private void handleTicketDelete(){
+
+    }
+
+    @FXML
+    private void handleVenueDelete(){
+
+    }
+
+    @FXML
+    private void handleBandDelete(){
+
+    }
+
+    @FXML
+    private void handleArtistDelete(){
+
+    }
+
+    @FXML
     private void handleCustomerUpdate(){
 
     }

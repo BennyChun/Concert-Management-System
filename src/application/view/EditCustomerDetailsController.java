@@ -9,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +26,8 @@ public class EditCustomerDetailsController extends AbstractController {
     @FXML private TextField emailField;
     @FXML private TextField phoneNumberField;
     @FXML private TextField dobField;
+
+    @FXML private CheckBox frequentCustomerBox;
 
     @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn custIDColumn;
