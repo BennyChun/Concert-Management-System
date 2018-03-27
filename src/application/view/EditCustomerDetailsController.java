@@ -45,7 +45,6 @@ public class EditCustomerDetailsController extends AbstractController {
             newCustBox.setVisible(false);
         }
         addButton.setDisable(true);
-        deleteButton.setDisable(true);
         setCustomerDataForTable();
         custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerID"));
         customerTable.setItems(data);
@@ -333,9 +332,56 @@ public class EditCustomerDetailsController extends AbstractController {
 
 
     //============================================================================================
+    private boolean checkIfCustomerExists(String custID){
+
+        String sql = "select cust_id from customers where cust_id = " + custID;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
+
+
     @FXML
     private void handleDelete(){
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Concert");
+        alert.setContentText("Are you sure you want to delete this concert?");
+        String custIDGiven = "'" + custIDField.getText() + "'";
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+
+            // check if concert field not empty   // check is there is a concert with concert id given
+            if ((!custIDField.getText().isEmpty())||checkIfCustomerExists(custIDGiven)){
+
+
+                String sql = "delete from customers where cust_id =" + custIDGiven;
+                int rowCount = DatabaseManager.sendUpdate(sql);
+                System.out.println(rowCount);
+                System.out.println(custIDGiven);
+
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Update Customer Details");
+                successAlert.setContentText("Concert was deleted successfully!");
+
+                successAlert.showAndWait();
+                _mainApp.initEditCustomerDetails();
+            }
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
     }
 
     //============================================================================================
