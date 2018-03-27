@@ -1,12 +1,15 @@
 package application.view;
 
+import application.database.DatabaseManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
 
 public class AddDataScreenController extends AbstractController {
 
@@ -108,10 +111,86 @@ public class AddDataScreenController extends AbstractController {
     }
 
 
+    private boolean checkIfConcertExists(String concertID){
+
+        String sql = "select conc_id from concert where conc_id = " + concertID;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+
+        try {
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
+
+
     @FXML
     private void handleConcertDelete(){
 
+
+    String concertIDgiven = "'" + concertIDField.getText() + "'";
+
+    // check if concert field not empty   // check is there is a concert with concert id given
+
+
+        if (!(concertIDField.getText().length() == 5)){
+
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error Dialog");
+        errorAlert.setHeaderText("Can't delete Concert");
+        errorAlert.setContentText("You did not input a correct concert id.");
+
+        errorAlert.showAndWait();
     }
+
+        if (!checkIfConcertExists(concertIDgiven)){
+
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error Dialog");
+        errorAlert.setHeaderText("Can't delete Concert");
+        errorAlert.setContentText("There is not concert with this concert id.");
+
+        errorAlert.showAndWait();
+    }
+
+
+
+        if (checkIfConcertExists(concertIDgiven)) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Concert");
+        alert.setContentText("Are you sure you want to delete this concert?");
+
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+
+            String sql = "delete from concert where conc_id =" + concertIDgiven;
+            int rowCount = DatabaseManager.sendUpdate(sql);
+            System.out.println(rowCount);
+            System.out.println(concertIDgiven);
+
+
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Information Dialog");
+            successAlert.setHeaderText("Update Customer Details");
+            successAlert.setContentText("Concert was deleted successfully!");
+
+            successAlert.showAndWait();
+        }
+        else {
+            // ... user chose CANCEL or closed the dialog
+        }
+
+    }
+}
 
     @FXML
     private void handleTicketDelete(){
