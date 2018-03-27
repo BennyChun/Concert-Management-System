@@ -28,7 +28,6 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML private ComboBox<String> priceInequality;
     @FXML private ComboBox<String> dateInequality;
-    @FXML private ComboBox<String> groupByOption;
 
     @FXML private TableView<Ticket> ticketTable;
     @FXML private TableColumn concertNameColumn;
@@ -38,6 +37,11 @@ public class ReserveTicketsController extends AbstractController {
     @FXML private TableColumn isVIPColumn;
     @FXML private TableColumn venueNameColumn;
     @FXML private TableColumn dateColumn;
+
+    @FXML private CheckBox advancedAggregationBox;
+    @FXML private ComboBox<String> aggregationOptions;
+
+
 
     private ObservableList<Ticket> data = FXCollections.observableArrayList();
     @FXML
@@ -54,14 +58,14 @@ public class ReserveTicketsController extends AbstractController {
                 "Lowest"
         ));
         dateInequality.setItems(FXCollections.observableArrayList(
-
                 ">=",
                 "<="
         ));
-        groupByOption.setItems(FXCollections.observableArrayList(
-                "Venue Name",
-                "Concert Name",
-                "Venue City"
+        aggregationOptions.setItems(FXCollections.observableArrayList(
+                "Show Number of Concerts",
+                "Show Ticket with Lowest Price",
+                "Show Concert With Highest Avg Ticket Prices",
+                "Show Concert with Lowest Avg Ticket Prices"
         ));
         getTableData();
         concertNameColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("concertName"));
@@ -99,6 +103,20 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleSearch(){
+        if (advancedAggregationBox.isSelected()){
+            if (concertNameField.getText().isEmpty() && ticketIDField.getText().isEmpty() && seatField.getText().isEmpty()
+                    && priceField.getText().isEmpty() && venueField.getText().isEmpty()) {
+                showAggregationQueries();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("Advanced Search");
+                alert.setContentText("Please clear fields. Fields must be clear for Advanced Search.");
+                alert.showAndWait();
+                return;
+            }
+        }
+
         String searchSQL = constructQuery();
         System.out.println(searchSQL);
 
@@ -199,7 +217,7 @@ public class ReserveTicketsController extends AbstractController {
             }
         }
         if (!venueField.getText().isEmpty()) {
-            sql.append("AND H.V_NAME = '" + venueField.getText() + "'");
+            sql.append(" AND H.V_NAME = '" + venueField.getText() + "'");
         }
         if (dateField.getValue() != null) {
             if (dateInequality.getValue() == null) {
@@ -220,5 +238,26 @@ public class ReserveTicketsController extends AbstractController {
             }
         }
         return sql.toString();
+    }
+
+    private void showAggregationQueries(){
+        String sql = "";
+        if (aggregationOptions.getValue() != null) {
+            String optionChoosen = aggregationOptions.getValue().toString();
+
+            if (optionChoosen.equals("Show Number of Concerts")) {
+                sql = "SELECT COUNT(DISTINCT CONC_NAME) FROM HOLDTICKETS H, SELLS S, CONCERT C " +
+                        "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.available = 1";
+
+            } else if (optionChoosen.equals("Show Ticket with Lowest Price")) {
+
+            } else if (optionChoosen.equals("Show Concert With Highest Avg Ticket Prices")) {
+
+            } else if (optionChoosen.equals("Show Concert with Lowest Avg Ticket Prices")) {
+
+            }
+
+
+        }
     }
 }
