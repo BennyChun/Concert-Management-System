@@ -78,7 +78,12 @@ public class EditCustomerDetailsController extends AbstractController {
     }
 
     private void setFrequentUserData(){
-        String sql = "";
+        String sql = "SELECT DISTINCT x.cust_id from holdtickets AS x WHERE NOT " +
+                "EXISTS (SELECT * FROM Concert AS y WHERE NOT " +
+                "EXISTS (SELECT * FROM holdtickets AS z " +
+                "WHERE z.cust_id = x.cust_id " +
+                "AND z.conc_id = z.conc_id))";
+        System.out.println(sql);
         
     }
 
