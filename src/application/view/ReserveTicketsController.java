@@ -40,8 +40,6 @@ public class ReserveTicketsController extends AbstractController {
     @FXML private TableColumn dateColumn;
 
     private ObservableList<Ticket> data = FXCollections.observableArrayList();
-
-
     @FXML
     private void initialize(){
         isVIP.setItems(FXCollections.observableArrayList(
@@ -49,18 +47,14 @@ public class ReserveTicketsController extends AbstractController {
                 "No"
         ));
         priceInequality.setItems(FXCollections.observableArrayList(
-                "=",
-                ">",
-                "<",
+
                 ">=",
                 "<=",
                 "Highest",
                 "Lowest"
         ));
         dateInequality.setItems(FXCollections.observableArrayList(
-                "=",
-                ">",
-                "<",
+
                 ">=",
                 "<="
         ));
@@ -69,7 +63,7 @@ public class ReserveTicketsController extends AbstractController {
                 "Concert Name",
                 "Venue City"
         ));
-        setTicketData();
+        getTableData();
         concertNameColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("concertName"));
         ticketIDColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("ticketID"));
         seatColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("seatNum"));
@@ -105,7 +99,16 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleSearch(){
+        String searchSQL = constructQuery();
+        System.out.println(searchSQL);
 
+        if (searchSQL.equals("")) {
+            return;
+        } else {
+            ResultSet rs = DatabaseManager.sendQuery(searchSQL);
+            setTicketTableData(rs);
+            DatabaseManager.closeStatement();
+        }
     }
 
     @FXML
@@ -113,9 +116,15 @@ public class ReserveTicketsController extends AbstractController {
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
-    private void setTicketData() {
+    private void getTableData() {
         String sql =  "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1";
         ResultSet rs = DatabaseManager.sendQuery(sql);
+        setTicketTableData(rs);
+        DatabaseManager.closeStatement();
+    }
+
+    private void setTicketTableData(ResultSet rs) {
+        data.clear();
         try {
             while (rs.next()) {
                 String name = rs.getString(1);
@@ -138,7 +147,6 @@ public class ReserveTicketsController extends AbstractController {
             e.printStackTrace();
             System.out.println("Connection Failed! Check output console");
         }
-        DatabaseManager.closeStatement();
     }
 
     private void fillTicketFields(Ticket temp) {
@@ -152,6 +160,65 @@ public class ReserveTicketsController extends AbstractController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
         LocalDate localDate = LocalDate.parse(stringDate, formatter);
         dateField.setValue(localDate);
+    }
 
+    private String constructQuery() {
+        StringBuffer sql = new StringBuffer("SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE" +
+                " FROM HOLDTICKETS H, SELLS S, CONCERT C" +
+                " WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1");
+        if (!concertNameField.getText().isEmpty()) {
+            sql.append(" AND C.CONC_NAME LIKE '%" + concertNameField.getText() + "%'");
+        }
+        if (!ticketIDField.getText().isEmpty()) {
+            sql.append(" AND H.TICKET_ID = '" + ticketIDField.getText() + "'");
+
+        }
+        if (!seatField.getText().isEmpty()) {
+            sql.append(" AND H.SEAT_NUM = '" + seatField.getText() + "'");
+
+        }
+        if (!priceField.getText().isEmpty()) {
+            if (priceInequality.getValue() == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("No price option");
+                alert.setContentText("Please select whether you would like to search >= price or <= price!");
+                alert.showAndWait();
+                return "";
+            }
+            String option = priceInequality.getValue();
+            if (option.equals(">=") || option.equals("<=")) {
+                sql.append(" AND H.COST " + option + priceField.getText());
+            }
+        }
+        if (isVIP.getValue() != null) {
+            if (isVIP.getValue().equals("Yes")) {
+                sql.append(" AND H.VIP = 1");
+            } else if (isVIP.getValue().equals("No")) {
+                sql.append(" AND H.VIP = 0");
+            }
+        }
+        if (!venueField.getText().isEmpty()) {
+            sql.append("AND H.V_NAME = '" + venueField.getText() + "'");
+        }
+        if (dateField.getValue() != null) {
+            if (dateInequality.getValue() == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText("No date option");
+                alert.setContentText("Please select whether you would like to search >= date or <= date!");
+                alert.showAndWait();
+                return "";
+            }
+            String date = dateField.getValue().toString();
+            date = date.replaceAll("-", "/");
+            if (!dateInequality.getValue().isEmpty()) {
+                String inequality = dateInequality.getValue();
+                sql.append("AND H.START_DATE " +inequality + " '" + date + "'");
+            } else {
+                sql.append("AND H.START_DATE = " + "'" + date + "'");
+            }
+        }
+        return sql.toString();
     }
 }
