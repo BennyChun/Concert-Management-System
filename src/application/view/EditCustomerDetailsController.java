@@ -27,6 +27,10 @@ public class EditCustomerDetailsController extends AbstractController {
 
     @FXML private CheckBox frequentCustomerBox;
 
+    @FXML private Button addButton;
+    @FXML private Button deleteButton;
+    @FXML private CheckBox newCustBox;
+
     @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn custIDColumn;
     private ObservableList<Customer> data = FXCollections.observableArrayList();
@@ -35,6 +39,13 @@ public class EditCustomerDetailsController extends AbstractController {
 
     @FXML
     private void initialize(){
+        if(!User.getInstance().getIsManager()){
+            addButton.setVisible(false);
+            deleteButton.setVisible(false);
+            newCustBox.setVisible(false);
+        }
+        addButton.setDisable(true);
+        deleteButton.setDisable(true);
         setCustomerDataForTable();
         custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerID"));
         customerTable.setItems(data);
@@ -205,5 +216,25 @@ public class EditCustomerDetailsController extends AbstractController {
 
             return false;
         }
+    }
+
+    @FXML
+    private void handleAdd(){
+
+    }
+
+    @FXML
+    private void handleDelete(){
+
+    }
+
+    @FXML
+    private void handleNewCust(){
+        if(newCustBox.isSelected()){
+            addButton.setDisable(false);
+        } else if(!newCustBox.isSelected()){
+            addButton.setDisable(true);
+        }
+
     }
 }

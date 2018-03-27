@@ -59,5 +59,16 @@
          </font>
       </JFXButton>
       <CheckBox fx:id="frequentCustomerBox" layoutX="212.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleFrequentCustomers" text="Show Frequent Customers" />
+      <JFXButton fx:id="deleteButton" buttonType="RAISED" focusTraversable="false" layoutX="486.0" layoutY="279.0" onAction="#handleDelete" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Delete">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="addButton" buttonType="RAISED" focusTraversable="false" layoutX="262.0" layoutY="279.0" onAction="#handleAdd" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Add">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXButton>
+      <CheckBox fx:id="newCustBox" layoutX="486.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleNewCust" text="New Customer" />
    </children>
 </AnchorPane>
