@@ -53,7 +53,7 @@
             <TextField fx:id="dobField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="375.0" layoutY="279.0" onAction="#handleUpdate" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Update">
+      <JFXButton fx:id="updateButton" buttonType="RAISED" focusTraversable="false" layoutX="375.0" layoutY="279.0" onAction="#handleUpdate" prefHeight="27.0" prefWidth="100.0" style="-fx-background-color: #ffffff;" text="Update">
          <font>
             <Font size="13.0" />
          </font>

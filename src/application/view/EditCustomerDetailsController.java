@@ -27,6 +27,7 @@ public class EditCustomerDetailsController extends AbstractController {
 
     @FXML private CheckBox frequentCustomerBox;
 
+    @FXML private Button updateButton;
     @FXML private Button addButton;
     @FXML private Button deleteButton;
     @FXML private CheckBox newCustBox;
@@ -353,39 +354,47 @@ public class EditCustomerDetailsController extends AbstractController {
         return false;
     }
 
-
     @FXML
     private void handleDelete(){
+        int selectedIndex = customerTable.getSelectionModel().getSelectedIndex();
+        if(selectedIndex >= 0){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Delete Concert");
+            alert.setContentText("Are you sure you want to delete this concert?");
+            String custIDGiven = "'" + custIDField.getText() + "'";
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Delete Concert");
-        alert.setContentText("Are you sure you want to delete this concert?");
-        String custIDGiven = "'" + custIDField.getText() + "'";
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-
-            // check if concert field not empty   // check is there is a concert with concert id given
-            if ((!custIDField.getText().isEmpty())||checkIfCustomerExists(custIDGiven)){
-
-
-                String sql = "delete from customers where cust_id =" + custIDGiven;
-                int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(custIDGiven);
+                // check if concert field not empty   // check is there is a concert with concert id given
+                if ((!custIDField.getText().isEmpty()) || checkIfCustomerExists(custIDGiven)) {
 
 
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Information Dialog");
-                successAlert.setHeaderText("Update Customer Details");
-                successAlert.setContentText("Concert was deleted successfully!");
+                    String sql = "delete from customers where cust_id =" + custIDGiven;
+                    int rowCount = DatabaseManager.sendUpdate(sql);
+                    System.out.println(rowCount);
+                    System.out.println(custIDGiven);
 
-                successAlert.showAndWait();
-                _mainApp.initEditCustomerDetails();
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Update Customer Details");
+                    successAlert.setContentText("Concert was deleted successfully!");
+
+                    successAlert.showAndWait();
+                    _mainApp.initEditCustomerDetails();
+                }
+            } else {
+                // ... user chose CANCEL or closed the dialog
             }
-        } else {
-            // ... user chose CANCEL or closed the dialog
+        } else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("No customer selected");
+            alert.setContentText("Please select a customer");
+
+            alert.showAndWait();
         }
     }
 
@@ -395,9 +404,11 @@ public class EditCustomerDetailsController extends AbstractController {
         if(newCustBox.isSelected()){
             addButton.setDisable(false);
             custIDField.setEditable(true);
+            updateButton.setDisable(true);
         } else if(!newCustBox.isSelected()){
             addButton.setDisable(true);
             custIDField.setEditable(false);
+            updateButton.setDisable(false);
         }
 
     }
