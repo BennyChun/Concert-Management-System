@@ -218,22 +218,135 @@ public class EditCustomerDetailsController extends AbstractController {
         }
     }
 
+    //============================================================================================
     @FXML
     private void handleAdd(){
+        if(usernameExists()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Customer ID Already Exists");
+            alert.setContentText("Please enter a valid 6 digit customer ID");
+            alert.showAndWait();
+        } else if(emailExists()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Customer Email Already Exists");
+            alert.setContentText("Please enter a different email");
+            alert.showAndWait();
+        } else if(!usernameExists() && !emailExists()){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Adding Customer...");
+            alert.setContentText("Are you sure you want to add this customer?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                if (isValidAddInput()) {
+                    String newName = "'" + custNameField.getText() + "'";
+                    String newAddress = "'" + addressField.getText() + "'";
+                    String newEmail = "'" + emailField.getText() + "'";
+                    String newPhoneNumber = "'" + phoneNumberField.getText() + "'";
+                    String newDOB = "'" + dobField.getText() + "'";
+                    String sql = "insert into customers values " + "('" + custIDField.getText() + "', " + newName + ", " + newAddress + ", "
+                            + newDOB + ", " + newPhoneNumber + ", " + newEmail + ")";
+                    DatabaseManager.sendUpdate(sql);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Upate Customer Details");
+                    successAlert.setContentText(custNameField.getText() + " has been added with cust ID: " + custIDField.getText());
+                    successAlert.showAndWait();
+                    _mainApp.initEditCustomerDetails();
+                }
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+
+        }
 
     }
 
+    private boolean usernameExists() {
+        String sql = "select cust_id from customers where cust_id = " + "'" + custIDField.getText() + "'";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
+    private boolean emailExists() {
+        String sql = "select email from customers where email = " + "'" + emailField.getText() + "'";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
+    private Boolean isValidAddInput(){
+        String errorMessage = "";
+
+        if (custNameField.getText() == null ||(custNameField).getText().length() == 0) {
+            errorMessage += "Not a valid name!\n";
+        }
+        if (addressField.getText() != null || addressField.getText().length() != 0) {
+            if(addressField.getText().length() > 40){
+                errorMessage += "Not a valid address!\n";
+            }
+        }
+        if (emailField.getText() == null || emailField.getText().length() == 0) {
+            errorMessage += "Not a valid e-mail address!\n";
+        }
+        System.out.println(phoneNumberField.getText().length());
+        if(phoneNumberField.getText() != null || phoneNumberField.getText().length() != 0) {
+            if (phoneNumberField.getText().length() != 12) {
+                errorMessage += "Not a valid phone number!\n";
+            }
+        }
+        //TODO regex check on DOB
+        if (dobField.getText() == null || dobField.getText().length() == 0 ) {
+            errorMessage += "Not a valid date of birth!\n";
+        }
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+    }
+
+
+    //============================================================================================
     @FXML
     private void handleDelete(){
 
     }
 
+    //============================================================================================
     @FXML
     private void handleNewCust(){
         if(newCustBox.isSelected()){
             addButton.setDisable(false);
+            custIDField.setEditable(true);
         } else if(!newCustBox.isSelected()){
             addButton.setDisable(true);
+            custIDField.setEditable(false);
         }
 
     }

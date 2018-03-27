@@ -59,16 +59,20 @@ public class CustomerLoginController extends AbstractController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
                 if (isValidInput()){
+                    //getting variable values
                     String newName = "'" + nameField.getText() +"'";
                     String newAddress = "'" + addressField.getText() + "'";
                     String newEmail = "'" + emailField.getText()+ "'";
                     String newPhoneNumber = "'" + phoneNumberField.getText() +"'";
+
+                    //replace dob - with / to fit with our schema
                     String dob = dobField.getValue().toString();
                     dob = dob.replaceAll("-","/");
                     String newDOB = "'" + dob + "'";
+
+                    //SQL query
                     String sql = "insert into customers values " + "('" + customerID + "', " + newName + ", " + newAddress + ", "
                                     + newDOB + ", " + newPhoneNumber + ", " + newEmail + ")";
-                    System.out.println(sql);
                     DatabaseManager.sendUpdate(sql);
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                     successAlert.setTitle("Information Dialog");

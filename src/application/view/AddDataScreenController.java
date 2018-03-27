@@ -11,15 +11,6 @@ import javafx.scene.layout.GridPane;
 public class AddDataScreenController extends AbstractController {
 
 //====================================================================================================
-    @FXML private GridPane customerGrid;
-    @FXML private TextField customerNameField;
-    @FXML private TextField customerIDField;
-    @FXML private TextField addressField;
-    @FXML private TextField phoneNumberField;
-    @FXML private TextField emailField;
-    @FXML private DatePicker dateOfBirthField;
-
-//====================================================================================================
     @FXML private GridPane concertGrid;
     @FXML private TextField concertNameField;
     @FXML private TextField concertIDField;
@@ -70,19 +61,7 @@ public class AddDataScreenController extends AbstractController {
     }
 
     @FXML
-    private void handleCustomer(){
-        customerGrid.setVisible(true);
-        concertGrid.setVisible(false);
-        venueGrid.setVisible(false);
-        ticketGrid.setVisible(false);
-        bandGrid.setVisible(false);
-        artistGrid.setVisible(false);
-
-    }
-
-    @FXML
     private void handleConcert(){
-        customerGrid.setVisible(false);
         concertGrid.setVisible(true);
         venueGrid.setVisible(false);
         ticketGrid.setVisible(false);
@@ -92,7 +71,6 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleVenue(){
-        customerGrid.setVisible(false);
         concertGrid.setVisible(false);
         venueGrid.setVisible(true);
         ticketGrid.setVisible(false);
@@ -103,7 +81,6 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleTicket(){
-        customerGrid.setVisible(false);
         concertGrid.setVisible(false);
         venueGrid.setVisible(false);
         ticketGrid.setVisible(true);
@@ -113,7 +90,6 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleBand(){
-        customerGrid.setVisible(false);
         concertGrid.setVisible(false);
         venueGrid.setVisible(false);
         ticketGrid.setVisible(false);
@@ -124,7 +100,6 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleArtist(){
-        customerGrid.setVisible(false);
         concertGrid.setVisible(false);
         venueGrid.setVisible(false);
         ticketGrid.setVisible(false);
@@ -132,11 +107,6 @@ public class AddDataScreenController extends AbstractController {
         artistGrid.setVisible(true);
     }
 
-
-    @FXML
-    private void handleCustomerDelete(){
-
-    }
 
     @FXML
     private void handleConcertDelete(){
@@ -163,10 +133,6 @@ public class AddDataScreenController extends AbstractController {
 
     }
 
-    @FXML
-    private void handleCustomerUpdate(){
-
-    }
 
     @FXML
     private void handleConcertUpdate(){
