@@ -1,5 +1,6 @@
 package application.view;
 
+import application.User;
 import application.database.DatabaseManager;
 import application.model.Artist;
 import application.model.Customer;
@@ -77,7 +78,6 @@ public class ReserveTicketsController extends AbstractController {
         venueNameColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("venueName"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Ticket, String>("date"));
         ticketTable.setItems(data);
-
         ticketTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     fillTicketFields(newValue);
@@ -86,17 +86,21 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleReserve(){
-        System.out.println(concertNameField.getText());
-        System.out.println(ticketIDField.getText());
-        System.out.println(seatField.getText());
-        System.out.println(priceField.getText());
-        System.out.println(venueField.getText());
-        System.out.println(isVIP.getEditor().getText());
-        System.out.println(dateField.getValue());
+        String reserveTicket = "UPDATE HOLDTICKETS SET CUST_ID = " + "'" + User.getInstance().getGlobalID() + "'," + " AVAILABLE = 0 WHERE TICKET_ID = '" + ticketIDField.getText() + "'";
+        System.out.println(reserveTicket);
+        DatabaseManager.sendUpdate(reserveTicket);
 
-        System.out.println(priceInequality.getEditor().getText());
-        System.out.println(dateInequality.getEditor().getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Reserve Ticket");
+        alert.setContentText("Are you sure you want to reserve this ticket?");
+        alert.showAndWait();
 
+        Alert finishAlert = new Alert(Alert.AlertType.INFORMATION);
+        finishAlert.setTitle("Confirmation Dialog");
+        finishAlert.setHeaderText("Reserve Ticket");
+        finishAlert.setContentText("Congratulatons. You are going to the event! Your ticket id is : " + ticketIDField.getText());
+        finishAlert.showAndWait();
     }
 
     @FXML
@@ -145,7 +149,6 @@ public class ReserveTicketsController extends AbstractController {
         isVIP.setValue(temp.getIsVIP());
         venueField.setText(temp.getVenueName());
         String stringDate = temp.getDate();
-        System.out.println(stringDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/d");
         LocalDate localDate = LocalDate.parse(stringDate, formatter);
         dateField.setValue(localDate);
