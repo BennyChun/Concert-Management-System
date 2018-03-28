@@ -1,11 +1,8 @@
 package application.view;
 
-import application.MainApp;
 import application.User;
 import application.database.DatabaseManager;
 import application.model.Customer;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +43,7 @@ public class EditCustomerDetailsController extends AbstractController {
             newCustBox.setVisible(false);
         }
         addButton.setDisable(true);
-        setCustomerDataForTable();
+        getCustomerData();
         custIDColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerID"));
         customerTable.setItems(data);
         if(!User.getInstance().getIsManager()){
@@ -75,23 +72,23 @@ public class EditCustomerDetailsController extends AbstractController {
         } else if(!frequentCustomerBox.isSelected()){
             customerTable.setItems(data);
         }
-
     }
 
     private void setFrequentUserData(){
-        String sql = "SELECT DISTINCT x.cust_id from holdtickets AS x WHERE NOT " +
-                "EXISTS (SELECT * FROM Concert AS y WHERE NOT " +
-                "EXISTS (SELECT * FROM holdtickets AS z " +
-                "WHERE z.cust_id = x.cust_id " +
-                "AND z.conc_id = z.conc_id))";
-        System.out.println(sql);
-        
+        String sql = "SELECT h.cust_id from holdtickets h " +
+                "inner join sells s on h.ticket_id = s.ticket_id " +
+                "group by h.cust_id " +
+                "having count(h.cust_id) >= (" +
+                "select count(conc_id) " +
+                "from Concert)";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        setTableData(rs, true);
     }
 
     /**
      * Sets edit customer details data for table to populate
      */
-    private void setCustomerDataForTable () {
+    private void getCustomerData() {
         String sql;
         if (User.getInstance().getIsManager()) {
             sql = "select cust_id from customers";
@@ -99,12 +96,22 @@ public class EditCustomerDetailsController extends AbstractController {
             sql = "select cust_id from customers where cust_id = " +  "'" + User.getInstance().getGlobalID() + "'";
         }
         ResultSet rs = DatabaseManager.sendQuery(sql);
+        setTableData(rs, false);
+    }
+
+    private void setTableData(ResultSet rs, boolean isFrequentQuery) {
+        frequentUserData.clear();
         try {
             while (rs.next()) {
                 String custID = rs.getString(1);
-
                 Customer c = new Customer(custID);
-                data.add(c); }
+
+                if (isFrequentQuery) {
+                    frequentUserData.add(c);
+                } else {
+                    data.add(c);
+                }
+            }
         } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Connection Failed! Check output console");
@@ -206,12 +213,9 @@ public class EditCustomerDetailsController extends AbstractController {
             errorMessage += "Not a valid date of birth!\n";
         }
 
-
-
         if (errorMessage.length() == 0) {
             return true;
         } else {
-            // Show the error message.
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Fields");
             alert.setHeaderText("Please correct invalid fields");
@@ -360,8 +364,8 @@ public class EditCustomerDetailsController extends AbstractController {
         if(selectedIndex >= 0){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Delete Concert");
-            alert.setContentText("Are you sure you want to delete this concert?");
+            alert.setHeaderText("Delete Customer");
+            alert.setContentText("Are you sure you want to delete this customer?");
             String custIDGiven = "'" + custIDField.getText() + "'";
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -373,14 +377,11 @@ public class EditCustomerDetailsController extends AbstractController {
 
                     String sql = "delete from customers where cust_id =" + custIDGiven;
                     int rowCount = DatabaseManager.sendUpdate(sql);
-                    System.out.println(rowCount);
-                    System.out.println(custIDGiven);
-
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                     successAlert.setTitle("Information Dialog");
                     successAlert.setHeaderText("Update Customer Details");
-                    successAlert.setContentText("Concert was deleted successfully!");
+                    successAlert.setContentText("Customer was deleted successfully!");
 
                     successAlert.showAndWait();
                     _mainApp.initEditCustomerDetails();
