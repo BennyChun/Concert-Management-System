@@ -33,7 +33,6 @@ public class AddDataScreenController extends AbstractController {
     @FXML private ComboBox<String> ticketIsVIPField;
     @FXML private TextField ticketCostField;
     @FXML private ComboBox<String> ticketVenuePicker;
-    @FXML private TextField ticketCityField;
     @FXML private TextField ticketCustIDField;
     @FXML private DatePicker ticketStartDateField;
     @FXML private ComboBox<String> isAvailableField;
@@ -68,22 +67,54 @@ public class AddDataScreenController extends AbstractController {
     }
 
     private void setConcertIDPicker() {
-        String sql = "select conc_id from concerts";
+        ObservableList<String> concertIDs = FXCollections.observableArrayList();
+        String sql = "select conc_id from concert";
         ResultSet rs = DatabaseManager.sendQuery(sql);
         try {
             while (rs.next()) {
+                String id = rs.getString(1);
+                concertIDs.add(id);
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        concertIDPicker.setItems(concertIDs);
+    }
+
+    private void setVenueNamePicker() {
+        ObservableList<String> venueNames= FXCollections.observableArrayList();
+        String sql = "select v_name, city from venue";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        try {
+            while (rs.next()) {
+                String id = rs.getString(1);
+                String city = rs.getString(2);
+                id = id + ", " + city;
+                venueNames.add(id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         DatabaseManager.closeStatement();
-    }
-
-    private void setVenueNamePicker() {
+        ticketVenuePicker.setItems(venueNames);
     }
 
     private void setArtistNamePicker() {
+        ObservableList<String> stageNames= FXCollections.observableArrayList();
+        String sql = "select a_name from artist_partof";
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        try {
+            while (rs.next()) {
+                String id = rs.getString(1);
+                stageNames.add(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        artistStageNamePicker.setItems(stageNames);
     }
 
     @FXML
@@ -150,7 +181,14 @@ public class AddDataScreenController extends AbstractController {
         return false;
     }
 
-
+    private int trueOrFalseChecker(String yesOrNo){
+        if(yesOrNo.equals("Yes")){
+            return 1;
+        } else if(yesOrNo.equals("No")){
+            return 0;
+        }
+        return 0;
+    }
     @FXML
     private void handleConcertDelete(){
 
@@ -216,35 +254,95 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleConcertUpdate(){
-        System.out.println(concertIDField.getText());
         String concertIDgiven = "'" + concertIDField.getText() + "'";
-        System.out.println(checkIfConcertExists(concertIDgiven));
+        String updateConcertName = "'" + concertNameField.getText()+ "'";
+        int updateDuration = Integer.parseInt(durationField.getText());
+        String startDate = startDateField.getValue().toString();
+        startDate = startDate.replaceAll("-", "/");
+        String updateStartDate = "'" + startDate + "'";
+        int is19Plus = trueOrFalseChecker(is19PlusField.getValue());;
+
         if (checkIfConcertExists(concertIDgiven) == true) { // update/modify customer
-            Alert updateAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            updateAlert.setTitle("Confirmation Dialog");
-            updateAlert.setHeaderText("Updating Concert Details");
-            updateAlert.setContentText("Are you sure the details are correct?");
-            Optional<ButtonType> result = updateAlert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if(isValidConcert()) {
+                Alert updateAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                updateAlert.setTitle("Confirmation Dialog");
+                updateAlert.setHeaderText("Updating Concert Details");
+                updateAlert.setContentText("Are you sure the details are correct?");
+                Optional<ButtonType> result = updateAlert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    String sql = "update concert set " +"conc_id = " + concertIDgiven + ", "+ "conc_name = " + updateConcertName + ", "+ "duration = " + updateDuration + ", "
+                            +"startDate = " +updateStartDate+ ", " + "adults_only = "+ is19Plus +" where conc_id = " +concertIDgiven;
+                    DatabaseManager.sendUpdate(sql);
 
-            } else {
-                // ... user chose CANCEL or closed the dialog
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Update Venue Details");
+                    successAlert.setContentText(venueNameField.getText() + " has been updated!");
+                    successAlert.showAndWait();
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
             }
-
         } else if (checkIfConcertExists(concertIDgiven) == false) { // add new customer
+            if(isValidConcert()) {
+                Alert addAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                addAlert.setTitle("Confirmation Dialog");
+                addAlert.setHeaderText("Adding Concert Details");
+                addAlert.setContentText("Are you sure the details are correct?");
+                Optional<ButtonType> result = addAlert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    String sql = "insert into concert values " + "(" + concertIDgiven + ", " + updateConcertName + ", " + updateDuration + ", "
+                            + updateStartDate + ", " + is19Plus +  ")";
+                    System.out.println(sql);
+                    DatabaseManager.sendUpdate(sql);
 
-            Alert addAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            addAlert.setTitle("Confirmation Dialog");
-            addAlert.setHeaderText("Adding Concert Details");
-            addAlert.setContentText("Are you sure the details are correct?");
-            Optional<ButtonType> result = addAlert.showAndWait();
-            if (result.get() == ButtonType.OK){
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Adding Venue");
+                    successAlert.setContentText(venueNameField.getText() + " has been added!");
+                    successAlert.showAndWait();
 
-            } else {
-                // ... user chose CANCEL or closed the dialog
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
             }
         }
 
+    }
+
+    private boolean isValidConcert(){
+        String errorMessage = "";
+
+        if (concertIDField.getText() == null ||(concertIDField).getText().length() == 0) {
+            if(concertIDField.getText().length() != 5) {
+                errorMessage += "Not a valid concert ID!\n";
+            }
+        }
+        if (concertNameField.getText() == null || concertNameField.getText().length() == 0) {
+            errorMessage += "Not a concert name!\n";
+        }
+        if (durationField.getText() != null || durationField.getText().length() != 0) {
+            if (Integer.parseInt(durationField.getText()) <= 0 ) {
+                errorMessage += "Not a valid duration!\n";
+            }
+        }
+        if(startDateField.getValue() == null || startDateField.getValue().toString().length() == 0) {
+            errorMessage += "Not a valid street address!\n";
+        }
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
     }
 
 

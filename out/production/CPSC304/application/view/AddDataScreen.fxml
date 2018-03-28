@@ -86,15 +86,14 @@
          </children>
       </GridPane>
         <JFXButton layoutX="7.0" layoutY="2.0" onAction="#handleBack" text="Back" />
-      <GridPane fx:id="ticketGrid" layoutX="124.0" layoutY="83.0" prefHeight="301.0" prefWidth="354.0" visible="false">
+      <GridPane fx:id="ticketGrid" layoutX="8.0" layoutY="82.0" prefHeight="300.0" prefWidth="584.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.71429443359375" minWidth="10.0" prefWidth="70.14288330078125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="104.4285888671875" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.71429443359375" minWidth="10.0" prefWidth="95.5714111328125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.85711669921875" minWidth="10.0" prefWidth="81.14288330078125" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.71429443359375" minWidth="10.0" prefWidth="86.4285888671875" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.71429443359375" minWidth="10.0" prefWidth="277.14288330078125" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.71429443359375" minWidth="10.0" prefWidth="111.71429443359375" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.857177734375" minWidth="10.0" prefWidth="102.28570556640625" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -108,27 +107,25 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Number" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City" GridPane.rowIndex="5" />
             <TextField fx:id="tickedIDField" GridPane.columnIndex="1" />
-            <TextField fx:id="ticketCityField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="seatNumberField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="VIP" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cost" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Venue Name" GridPane.rowIndex="4" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID" GridPane.rowIndex="6" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="7" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID" GridPane.rowIndex="5" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="6" />
             <TextField fx:id="ticketCostField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="ticketCustIDField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <JFXComboBox fx:id="ticketIsVIPField" prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available" GridPane.rowIndex="8" />
-            <JFXComboBox fx:id="isAvailableField" prefHeight="25.0" prefWidth="113.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <JFXDatePicker fx:id="ticketStartDateField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketDelete" style="-fx-background-color: #ffffff;" text="Delete" GridPane.rowIndex="9" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Concert ID" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-            <JFXComboBox prefHeight="28.0" prefWidth="111.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketAdd" style="-fx-background-color: #ffffff;" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-            <JFXComboBox fx:id="ticketVenuePicker" prefHeight="27.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="ticketCustIDField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <JFXComboBox fx:id="ticketIsVIPField" prefHeight="36.0" prefWidth="302.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available" GridPane.rowIndex="7" />
+            <JFXComboBox fx:id="isAvailableField" prefHeight="29.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <JFXDatePicker fx:id="ticketStartDateField" prefHeight="16.0" prefWidth="263.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketDelete" style="-fx-background-color: #ffffff;" text="Delete" GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Concert ID" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <JFXComboBox fx:id="concertIDPicker" prefHeight="28.0" prefWidth="111.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketAdd" style="-fx-background-color: #ffffff;" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <JFXComboBox fx:id="ticketVenuePicker" prefHeight="34.0" prefWidth="280.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <GridPane fx:id="bandGrid" layoutX="200.0" layoutY="140.0" visible="false">

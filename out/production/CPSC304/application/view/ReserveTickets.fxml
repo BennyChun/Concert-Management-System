@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
+<AnchorPane prefHeight="400.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
    <children>
       <JFXButton layoutY="2.0" onAction="#handleBack" text="Back" />
       <TableView fx:id="ticketTable" layoutX="21.0" layoutY="27.0" prefHeight="344.0" prefWidth="325.0">
@@ -75,7 +75,7 @@
       </GridPane>
       <HBox layoutX="381.0" layoutY="345.0" prefHeight="52.0" prefWidth="318.0" spacing="75.0">
          <children>
-            <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleReserve" style="-fx-background-color: #ffffff;" text="Reserve" />
+            <JFXButton fx:id="reserveButton" buttonType="RAISED" focusTraversable="false" onAction="#handleReserve" style="-fx-background-color: #ffffff;" text="Reserve" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleSearch" style="-fx-background-color: #ffffff;" text="Search" />
          </children>
          <padding>

@@ -41,11 +41,14 @@ public class ReserveTicketsController extends AbstractController {
     @FXML private CheckBox advancedAggregationBox;
     @FXML private ComboBox<String> aggregationOptions;
 
-
+    @FXML private Button reserveButton;
 
     private ObservableList<Ticket> data = FXCollections.observableArrayList();
     @FXML
     private void initialize(){
+        if(User.getInstance().getIsManager()){
+            reserveButton.setDisable(true);
+        }
         isVIP.setItems(FXCollections.observableArrayList(
                 "Yes",
                 "No"
