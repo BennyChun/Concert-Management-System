@@ -257,7 +257,7 @@ public class EditCustomerDetailsController extends AbstractController {
                     DatabaseManager.sendUpdate(sql);
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                     successAlert.setTitle("Information Dialog");
-                    successAlert.setHeaderText("Upate Customer Details");
+                    successAlert.setHeaderText("Update Customer Details");
                     successAlert.setContentText(custNameField.getText() + " has been added with cust ID: " + custIDField.getText());
                     successAlert.showAndWait();
                     _mainApp.initEditCustomerDetails();

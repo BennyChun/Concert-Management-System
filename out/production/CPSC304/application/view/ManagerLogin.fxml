@@ -17,12 +17,12 @@
       <Text layoutX="82.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Username" />
       <Text layoutX="300.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
       <TextField fx:id="managerNumber" focusTraversable="false" layoutX="82.0" layoutY="221.0" />
+      <CustomPasswordField fx:id="password" layoutX="300.0" layoutY="221.0" />
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="506.0" layoutY="341.0" onAction="#handleLogin" style="-fx-background-color: #ffffff;" text="Login">
          <font>
             <Font size="21.0" />
          </font>
       </JFXButton>
       <JFXButton layoutX="14.0" layoutY="14.0" onAction="#handleBack" text="Back" />
-      <CustomPasswordField fx:id="password" focusTraversable="false" layoutX="300.0" layoutY="221.0" />
    </children>
 </AnchorPane>
