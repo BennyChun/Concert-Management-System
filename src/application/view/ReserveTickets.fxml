@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,18 +16,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
+<AnchorPane prefHeight="400.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
    <children>
       <JFXButton layoutY="2.0" onAction="#handleBack" text="Back" />
-      <TableView layoutX="21.0" layoutY="27.0" prefHeight="344.0" prefWidth="325.0">
+      <TableView fx:id="ticketTable" layoutX="21.0" layoutY="27.0" prefHeight="344.0" prefWidth="325.0">
         <columns>
-          <TableColumn prefWidth="84.14285278320312" text="Concert Name" />
-          <TableColumn prefWidth="54.28570556640625" text="TicketID" />
-            <TableColumn prefWidth="32.714324951171875" text="Seat" />
-            <TableColumn prefWidth="35.4285888671875" text="Price" />
-            <TableColumn prefWidth="25.5714111328125" text="VIP" />
-            <TableColumn prefWidth="41.71429443359375" text="Venue" />
-            <TableColumn prefWidth="47.0" text="Date" />
+          <TableColumn fx:id="concertNameColumn" prefWidth="84.14285278320312" text="Concert Name" />
+          <TableColumn fx:id="ticketIDColumn" prefWidth="54.28570556640625" text="TicketID" />
+            <TableColumn fx:id="seatColumn" prefWidth="32.714324951171875" text="Seat" />
+            <TableColumn fx:id="priceColumn" prefWidth="35.4285888671875" text="Price" />
+            <TableColumn fx:id="isVIPColumn" prefWidth="32.0" text="VIP" />
+            <TableColumn fx:id="venueNameColumn" minWidth="0.0" prefWidth="36.0" text="Venue" />
+            <TableColumn fx:id="dateColumn" prefWidth="47.0" text="Date" />
         </columns>
       </TableView>
       <Text layoutX="466.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Details">
@@ -67,11 +68,12 @@
             <JFXDatePicker fx:id="dateField" prefWidth="111.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <JFXComboBox fx:id="priceInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXComboBox fx:id="dateInequality" prefHeight="25.0" prefWidth="107.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Group By" GridPane.rowIndex="7" />
-            <JFXComboBox fx:id="groupByOption" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Advanced Search" GridPane.rowIndex="7" />
+            <JFXComboBox fx:id="aggregationOptions" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <CheckBox fx:id="advancedAggregationBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <HBox layoutX="377.0" layoutY="323.0" prefHeight="48.0" prefWidth="325.0" spacing="75.0">
+      <HBox layoutX="381.0" layoutY="345.0" prefHeight="52.0" prefWidth="318.0" spacing="75.0">
          <children>
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleReserve" style="-fx-background-color: #ffffff;" text="Reserve" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleSearch" style="-fx-background-color: #ffffff;" text="Search" />

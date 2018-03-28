@@ -75,7 +75,7 @@ public class Concert {
         return isAdultShow;
     }
 
-    public void setIsAdultShow(String isAdultShow) {
-        this.isAdultShow.set(isAdultShow);
-    }
+    public void setIsAdultShow(String isAdultShow) { this.isAdultShow.set(isAdultShow); }
+
 }
+

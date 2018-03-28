@@ -2,6 +2,7 @@ package application.view;
 
 
 import application.User;
+import application.database.DatabaseManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -24,6 +25,7 @@ public class OptionSelectController extends AbstractController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             // ... user chose OK
+            DatabaseManager.closeConnection();
             _mainApp.close();
         } else {
             // ... user chose CANCEL or closed the dialog
