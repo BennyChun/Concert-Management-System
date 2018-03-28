@@ -16,26 +16,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
+<AnchorPane prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.ReserveTicketsController">
    <children>
       <JFXButton layoutY="2.0" onAction="#handleBack" text="Back" />
-      <TableView fx:id="ticketTable" layoutX="21.0" layoutY="27.0" prefHeight="344.0" prefWidth="325.0">
+      <TableView fx:id="ticketTable" layoutX="21.0" layoutY="27.0" prefHeight="344.0" prefWidth="434.0">
         <columns>
-          <TableColumn fx:id="concertNameColumn" prefWidth="84.14285278320312" text="Concert Name" />
-          <TableColumn fx:id="ticketIDColumn" prefWidth="54.28570556640625" text="TicketID" />
-            <TableColumn fx:id="seatColumn" prefWidth="32.714324951171875" text="Seat" />
-            <TableColumn fx:id="priceColumn" prefWidth="35.4285888671875" text="Price" />
-            <TableColumn fx:id="isVIPColumn" prefWidth="32.0" text="VIP" />
-            <TableColumn fx:id="venueNameColumn" minWidth="0.0" prefWidth="36.0" text="Venue" />
-            <TableColumn fx:id="dateColumn" prefWidth="47.0" text="Date" />
+          <TableColumn fx:id="concertNameColumn" prefWidth="131.28570556640625" text="Concert Name" />
+          <TableColumn fx:id="ticketIDColumn" minWidth="7.571441650390625" prefWidth="54.857147216796875" text="TicketID" />
+            <TableColumn fx:id="seatColumn" minWidth="5.571441650390625" prefWidth="29.142852783203125" text="Seat" />
+            <TableColumn fx:id="priceColumn" minWidth="7.999969482421875" prefWidth="34.71429443359375" text="Price" />
+            <TableColumn fx:id="isVIPColumn" prefWidth="27.42852783203125" text="VIP" />
+            <TableColumn fx:id="venueNameColumn" minWidth="0.0" prefWidth="121.14288330078125" text="Venue" />
+            <TableColumn fx:id="dateColumn" prefWidth="30.85711669921875" text="Date" />
         </columns>
       </TableView>
-      <Text layoutX="466.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Details">
+      <Text layoutX="555.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Details">
          <font>
             <Font size="25.0" />
          </font>
       </Text>
-      <GridPane layoutX="377.0" layoutY="60.0" prefHeight="244.0" prefWidth="325.0">
+      <GridPane layoutX="466.0" layoutY="59.0" prefHeight="244.0" prefWidth="325.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -73,7 +73,7 @@
             <CheckBox fx:id="advancedAggregationBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <HBox layoutX="381.0" layoutY="345.0" prefHeight="52.0" prefWidth="318.0" spacing="75.0">
+      <HBox layoutX="470.0" layoutY="334.0" prefHeight="52.0" prefWidth="318.0" spacing="75.0">
          <children>
             <JFXButton fx:id="reserveButton" buttonType="RAISED" focusTraversable="false" onAction="#handleReserve" style="-fx-background-color: #ffffff;" text="Reserve" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleSearch" style="-fx-background-color: #ffffff;" text="Search" />

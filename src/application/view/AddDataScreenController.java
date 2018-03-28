@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class AddDataScreenController extends AbstractController {
     @FXML private TextField streetAddressField;
     //====================================================================================================
     @FXML private GridPane ticketGrid;
-    @FXML private TextField tickedIDField;
+    @FXML private TextField ticketIDField;
     @FXML private TextField seatNumberField;
     @FXML private ComboBox<String> ticketIsVIPField;
     @FXML private TextField ticketCostField;
@@ -91,7 +92,7 @@ public class AddDataScreenController extends AbstractController {
             while (rs.next()) {
                 String id = rs.getString(1);
                 String city = rs.getString(2);
-                id = id + ", " + city;
+                id = id + "," + city;
                 venueNames.add(id);
             }
         } catch (SQLException e) {
@@ -164,6 +165,16 @@ public class AddDataScreenController extends AbstractController {
         artistGrid.setVisible(true);
     }
 
+    private int trueOrFalseChecker(String yesOrNo){
+        if(yesOrNo.equals("Yes")){
+            return 1;
+        } else if(yesOrNo.equals("No")){
+            return 0;
+        }
+        return 0;
+    }
+
+
 //================================================================================================================
 
     private boolean checkIfConcertExists(String concertID){
@@ -181,14 +192,6 @@ public class AddDataScreenController extends AbstractController {
         return false;
     }
 
-    private int trueOrFalseChecker(String yesOrNo){
-        if(yesOrNo.equals("Yes")){
-            return 1;
-        } else if(yesOrNo.equals("No")){
-            return 0;
-        }
-        return 0;
-    }
     @FXML
     private void handleConcertDelete(){
 
@@ -260,7 +263,7 @@ public class AddDataScreenController extends AbstractController {
         String startDate = startDateField.getValue().toString();
         startDate = startDate.replaceAll("-", "/");
         String updateStartDate = "'" + startDate + "'";
-        int is19Plus = trueOrFalseChecker(is19PlusField.getValue());;
+        int is19Plus = trueOrFalseChecker(is19PlusField.getValue());
 
         if (checkIfConcertExists(concertIDgiven) == true) { // update/modify customer
             if(isValidConcert()) {
@@ -313,18 +316,15 @@ public class AddDataScreenController extends AbstractController {
     private boolean isValidConcert(){
         String errorMessage = "";
 
-        if (concertIDField.getText() == null ||(concertIDField).getText().length() == 0) {
-            if(concertIDField.getText().length() != 5) {
-                errorMessage += "Not a valid concert ID!\n";
-            }
+        if (concertIDField.getText() == null ||(concertIDField).getText().length() == 0 || concertIDField.getText().length() != 5) {
+            errorMessage += "Not a valid concert ID!\n";
         }
+
         if (concertNameField.getText() == null || concertNameField.getText().length() == 0) {
-            errorMessage += "Not a concert name!\n";
+            errorMessage += "Not a valid concert name!\n";
         }
-        if (durationField.getText() != null || durationField.getText().length() != 0) {
-            if (Integer.parseInt(durationField.getText()) <= 0 ) {
+        if (durationField.getText() == null || durationField.getText().length() == 0 || Integer.parseInt(durationField.getText()) <= 0 ) {
                 errorMessage += "Not a valid duration!\n";
-            }
         }
         if(startDateField.getValue() == null || startDateField.getValue().toString().length() == 0) {
             errorMessage += "Not a valid street address!\n";
@@ -357,12 +357,207 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleTicketUpdate(){
+        String ticketIDGiven ="";
+        if (!ticketIDField.getText().isEmpty())
+             ticketIDGiven = "'" + ticketIDField.getText() + "'";
+
+        if (checkIfTicketExists(ticketIDGiven)) { // update/modify customer
+            if(isValidTicket()) {
+                Alert updateAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                updateAlert.setTitle("Confirmation Dialog");
+                updateAlert.setHeaderText("Updating Ticket Details");
+                updateAlert.setContentText("Are you sure the details are correct?");
+                Optional<ButtonType> result = updateAlert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    String updateSeatNumber = "'" + seatNumberField.getText()+ "'";
+                    int updateVIP = trueOrFalseChecker(ticketIsVIPField.getValue());
+                    int cost = Integer.parseInt(ticketCostField.getText());
+                    //parse venue name and city
+                    String venueAndCity = ticketVenuePicker.getValue();
+                    String updateTicketVenueName = "'" +  venueAndCity.split(",")[0] + "'";
+                    String updateTicketCity = "'" + venueAndCity.split(",")[1] + "'";
+
+                    String updateCustomerID = "'" + ticketCustIDField.getText() + "'";
+
+                    String startDate = ticketStartDateField.getValue().toString();
+                    startDate = startDate.replaceAll("-", "/");
+                    String updateStartDate = "'" + startDate + "'";
+                    int updateAvailable = trueOrFalseChecker(isAvailableField.getValue());
+
+                    String sql = "update holdtickets set " + "seat_num = " + updateSeatNumber +", " + "start_date = "+ updateStartDate + ", "
+                            + "vip = " + updateVIP + ", "  +"cost = " + cost + ", " + "city = "+ updateTicketCity + ", " + "v_name = " + updateTicketVenueName +
+                            ", " + "cust_id = " + updateCustomerID +", " + "available = "+ updateAvailable +" where ticket_id = " +ticketIDGiven;
+                    DatabaseManager.sendUpdate(sql);
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Update Ticket Details");
+                    successAlert.setContentText(ticketIDField.getText() + " has been updated!");
+                    successAlert.showAndWait();
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Ticket ID does not exist");
+            alert.setContentText("Please enter valid ticket to update!");
+
+            alert.showAndWait();
+        }
 
     }
 
     @FXML
     private void handleTicketAdd(){
 
+        String ticketIDGiven ="";
+        if (!ticketIDField.getText().isEmpty())
+            ticketIDGiven = "'" + ticketIDField.getText() + "'";
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Ticket ID is not valid");
+            alert.setContentText("Please enter a valid ticket ID. Ticket ID cannot be blank");
+            alert.showAndWait();
+            return;
+
+        }
+
+        if (!checkIfTicketExists(ticketIDGiven)) {
+            if(isValidTicket()) {
+                Alert updateAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                updateAlert.setTitle("Confirmation Dialog");
+                updateAlert.setHeaderText("Updating Ticket Details");
+                updateAlert.setContentText("Are you sure the details are correct?");
+                Optional<ButtonType> result = updateAlert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    String updateSeatNumber = "'" + seatNumberField.getText()+ "'";
+                    int updateVIP = trueOrFalseChecker(ticketIsVIPField.getValue());
+                    int cost = Integer.parseInt(ticketCostField.getText());
+                    //parse venue name and city
+                    String venueAndCity = ticketVenuePicker.getValue();
+                    String updateTicketVenueName = "'" +  venueAndCity.split(",")[0] + "'";
+                    String updateTicketCity = "'" + venueAndCity.split(",")[1] + "'";
+                    String updateCustomerID = "'" + ticketCustIDField.getText() + "'";
+                    String startDate = ticketStartDateField.getValue().toString();
+                    startDate = startDate.replaceAll("-", "/");
+                    String updateStartDate = "'" + startDate + "'";
+                    int updateAvailable = trueOrFalseChecker(isAvailableField.getValue());
+                    String updateConcertID = "'" + concertIDPicker.getValue() + "'";
+
+                    String ticketSQL = "";
+                    String sellsSQL = "";
+                    if (ticketCustIDField.getText().isEmpty()) {
+                        ticketSQL = "insert into holdtickets values " + "(" + ticketIDGiven + ", " + updateSeatNumber + ", " + updateStartDate + ", "
+                                + updateVIP + ", " + cost + ", " + updateTicketCity + ", " + updateTicketVenueName + ", " + "NULL" +
+                                ", " + updateAvailable + ")";
+                        sellsSQL = "insert into sells values " + "(" + updateConcertID + ", " + ticketIDGiven + ")";
+                    } else {
+                         ticketSQL = "insert into holdtickets values " + "(" + ticketIDGiven + ", " + updateSeatNumber + ", " + updateStartDate + ", "
+                                + updateVIP + ", " + cost + ", " + updateTicketCity + ", " + updateTicketVenueName + ", " + updateCustomerID +
+                                ", " + updateAvailable + ")";
+                         sellsSQL = "insert into sells values " + "(" + updateConcertID + ", " + ticketIDGiven + ")";
+
+                    }
+                    System.out.println(ticketSQL);
+                    System.out.println(sellsSQL);
+                    DatabaseManager.sendUpdate(ticketSQL);
+                    DatabaseManager.sendUpdate(sellsSQL);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Update Ticket Details");
+                    successAlert.setContentText(ticketIDField.getText() + " has been updated!");
+                    successAlert.showAndWait();
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
+            }
+        } else if(checkIfTicketExists(ticketIDGiven)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Ticket ID already exists");
+            alert.setContentText("Please enter a new and valid ticket to update!");
+
+            alert.showAndWait();
+        }
+
+    }
+
+    private boolean checkIfTicketExists(String ticketID){
+        String sql = "select ticket_id from holdtickets where ticket_id = " + ticketID;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
+
+    private boolean isValidTicket() {
+        String errorMessage = "";
+
+        if (ticketIDField.getText() == null || (ticketIDField).getText().length() == 0 || ticketIDField.getText().length() != 10) {
+            errorMessage += "Not a valid ticket ID!\n";
+        }
+        if (seatNumberField.getText() == null || seatNumberField.getText().length() == 0 || seatNumberField.getText().length() != 3) {
+            errorMessage += "Not a valid seat number!\n";
+        }
+        if (ticketIsVIPField.getValue() == null || ticketIsVIPField.getValue().length() == 0) {
+            errorMessage += "Please specify if ticket is for VIPs or not!!\n";
+        }
+        if (ticketCostField.getText() == null || ticketCostField.getText().length() == 0 || Integer.parseInt(ticketCostField.getText()) <= 0) {
+            errorMessage += "Not a valid ticket cost!\n";
+        }
+        if (ticketVenuePicker.getValue() == null || ticketVenuePicker.getValue().length() == 0) {
+            errorMessage += "Not a valid venue!";
+        }
+        if (!ticketCustIDField.getText().isEmpty()){
+            if ((!(checkIfCustomerExists(ticketCustIDField.getText())))) {
+                errorMessage += "Customer does not exist!";
+            }
+        }
+        if (ticketStartDateField.getValue() == null || ticketStartDateField.getValue().toString().length() == 0 ) {
+            errorMessage += "Not a valid date of birth!\n";
+        }
+        if (isAvailableField.getValue() == null || isAvailableField.getValue().length() == 0) {
+            errorMessage += "Please specify if ticket is available!\n";
+        }
+
+        if (errorMessage.length() == 0) {
+            return true;
+        } else {
+            // Show the error message.
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Please correct invalid fields");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
+        }
+
+    }
+
+    private boolean checkIfCustomerExists(String custID){
+        String sql = "select cust_id from customers where cust_id = " + custID;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+
+        try {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
     }
 
 //================================================================================================================
@@ -449,13 +644,13 @@ public class AddDataScreenController extends AbstractController {
             errorMessage += "Not a valid venue name!\n";
         }
         if (cityField.getText() == null || cityField.getText().length() == 0) {
-                errorMessage += "Not a valid city!\n";
+            errorMessage += "Not a valid city!\n";
         }
         if (capacityField.getText() == null || capacityField.getText().length() == 0) {
-                errorMessage += "Not a valid capacity!\n";
+            errorMessage += "Not a valid capacity!\n";
         }
         if(streetAddressField.getText() == null || streetAddressField.getText().length() == 0) {
-                errorMessage += "Not a valid street address!\n";
+            errorMessage += "Not a valid street address!\n";
         }
 
 

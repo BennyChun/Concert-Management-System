@@ -107,7 +107,7 @@
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket ID" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Seat Number" GridPane.rowIndex="1" />
-            <TextField fx:id="tickedIDField" GridPane.columnIndex="1" />
+            <TextField fx:id="ticketIDField" GridPane.columnIndex="1" />
             <TextField fx:id="seatNumberField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <JFXButton buttonType="RAISED" focusTraversable="false" onAction="#handleTicketUpdate" style="-fx-background-color: #ffffff;" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="VIP" GridPane.rowIndex="2" />
