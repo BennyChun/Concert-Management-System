@@ -63,7 +63,7 @@ public class ReserveTicketsController extends AbstractController {
         ));
         aggregationOptions.setItems(FXCollections.observableArrayList(
                 "Show Number of Concerts",
-                "Show Ticket with Lowest Price",
+                "Show Ticket(s) with Lowest Cost",
                 "Show Concert With Highest Avg Ticket Prices",
                 "Show Concert with Lowest Avg Ticket Prices"
         ));
@@ -107,6 +107,7 @@ public class ReserveTicketsController extends AbstractController {
             if (concertNameField.getText().isEmpty() && ticketIDField.getText().isEmpty() && seatField.getText().isEmpty()
                     && priceField.getText().isEmpty() && venueField.getText().isEmpty()) {
                 showAggregationQueries();
+                return;
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
@@ -116,10 +117,7 @@ public class ReserveTicketsController extends AbstractController {
                 return;
             }
         }
-
         String searchSQL = constructQuery();
-        System.out.println(searchSQL);
-
         if (searchSQL.equals("")) {
             return;
         } else {
@@ -135,7 +133,8 @@ public class ReserveTicketsController extends AbstractController {
     }
 
     private void getTableData() {
-        String sql =  "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1";
+        String sql =  "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C " +
+                "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1";
         ResultSet rs = DatabaseManager.sendQuery(sql);
         setTicketTableData(rs);
         DatabaseManager.closeStatement();
@@ -244,20 +243,43 @@ public class ReserveTicketsController extends AbstractController {
         String sql = "";
         if (aggregationOptions.getValue() != null) {
             String optionChoosen = aggregationOptions.getValue().toString();
-
             if (optionChoosen.equals("Show Number of Concerts")) {
+                // Returns 1 column (int) representing # of concerts
                 sql = "SELECT COUNT(DISTINCT CONC_NAME) FROM HOLDTICKETS H, SELLS S, CONCERT C " +
                         "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.available = 1";
 
-            } else if (optionChoosen.equals("Show Ticket with Lowest Price")) {
+            } else if (optionChoosen.equals("Show Ticket(s) with Lowest Cost")) {
+                // Returns same # of columns as Tableview. Set data and display it there instead of pop-up box
+                sql = "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C "
+                        + "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1 AND H.COST = " +
+                        "(SELECT MIN(COST) FROM HOLDTICKETS WHERE AVAILABLE = 1)";
+                ResultSet rs = DatabaseManager.sendQuery(sql);
+                setTicketTableData(rs);
+                DatabaseManager.closeStatement();
 
             } else if (optionChoosen.equals("Show Concert With Highest Avg Ticket Prices")) {
+                sql = "SELECT C.CONC_NAME, AVG(H.COST) " +
+                        "FROM HOLDTICKETS H, SELLS S, CONCERT C " +
+                        "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1 " +
+                        "GROUP BY C.CONC_NAME " +
+                        "HAVING AVG(H.COST) = " +
+                        "(SELECT MAX(AVG(COST)) AS MAXAVG " +
+                        "FROM HOLDTICKETS H1, SELLS S1, CONCERT C1 " +
+                        "WHERE S1.CONC_ID = C1.CONC_ID AND S1.TICKET_ID = H1.TICKET_ID AND H1.AVAILABLE = 1 " +
+                        "GROUP BY C1.CONC_NAME)";
 
             } else if (optionChoosen.equals("Show Concert with Lowest Avg Ticket Prices")) {
-
+                sql = "SELECT C.CONC_NAME, AVG(H.COST) " +
+                        "FROM HOLDTICKETS H, SELLS S, CONCERT C " +
+                        "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1 " +
+                        "GROUP BY C.CONC_NAME " +
+                        "HAVING AVG(H.COST) = " +
+                        "(SELECT MIN(AVG(COST)) AS MINAVG " +
+                        "FROM HOLDTICKETS H1, SELLS S1, CONCERT C1 " +
+                        "WHERE S1.CONC_ID = C1.CONC_ID AND S1.TICKET_ID = H1.TICKET_ID AND H1.AVAILABLE = 1 " +
+                        "GROUP BY C1.CONC_NAME)";
             }
-
-
+            System.out.println(sql);
         }
     }
 }
