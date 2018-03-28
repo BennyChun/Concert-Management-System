@@ -53,9 +53,7 @@ public class ReserveTicketsController extends AbstractController {
         priceInequality.setItems(FXCollections.observableArrayList(
 
                 ">=",
-                "<=",
-                "Highest",
-                "Lowest"
+                "<="
         ));
         dateInequality.setItems(FXCollections.observableArrayList(
                 ">=",
@@ -84,14 +82,16 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleReserve(){
+        // Check if ticket is selected otherwise it will not reserve a ticket
         if (ticketIDField.getText().isEmpty()) {
             Alert reserveAlert = new Alert(Alert.AlertType.ERROR);
             reserveAlert.setTitle("Error Dialog");
             reserveAlert.setHeaderText("Reserve Ticket");
             reserveAlert.setContentText("Please make sure you click on the ticket you wish to reserve. Ticket ID does not exist.");
             reserveAlert.showAndWait();
+            return;
         }
-
+        // Updates customer id to current user and sets available to 0
         String reserveTicket = "UPDATE HOLDTICKETS SET CUST_ID = " + "'" + User.getInstance().getGlobalID() + "'," + " AVAILABLE = 0 WHERE TICKET_ID = '" + ticketIDField.getText() + "'";
         System.out.println(reserveTicket);
         DatabaseManager.sendUpdate(reserveTicket);
@@ -111,6 +111,7 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleSearch(){
+        // If Advanced Box is checked then it shows the queries listed in the drop down and doesn't search
         if (advancedAggregationBox.isSelected()){
             if (concertNameField.getText().isEmpty() && ticketIDField.getText().isEmpty() && seatField.getText().isEmpty()
                     && priceField.getText().isEmpty() && venueField.getText().isEmpty()) {
@@ -125,6 +126,7 @@ public class ReserveTicketsController extends AbstractController {
                 return;
             }
         }
+        // Invalid searches will popup alert text telling user to fix
         String searchSQL = constructQuery();
         if (searchSQL.equals("")) {
             return;
@@ -140,6 +142,9 @@ public class ReserveTicketsController extends AbstractController {
         _mainApp.initOptionSelect(_mainApp.globalID);
     }
 
+    /**
+     * Fills data for TableView to display, used on initialize
+     */
     private void getTableData() {
         String sql =  "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C " +
                 "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.AVAILABLE = 1";
@@ -148,6 +153,10 @@ public class ReserveTicketsController extends AbstractController {
         DatabaseManager.closeStatement();
     }
 
+    /**
+     * Fills data with table column info
+     * @param rs ResultSet contains info to put into columns
+     */
     private void setTicketTableData(ResultSet rs) {
         data.clear();
         try {
@@ -174,6 +183,10 @@ public class ReserveTicketsController extends AbstractController {
         }
     }
 
+    /**
+     * Fills text fields with information from selected ticket
+     * @param temp Current ticket selected
+     */
     private void fillTicketFields(Ticket temp) {
         concertNameField.setText(temp.getConcertName());
         ticketIDField.setText(temp.getTicketID());
@@ -187,6 +200,11 @@ public class ReserveTicketsController extends AbstractController {
         dateField.setValue(localDate);
     }
 
+    /**
+     * Creates a query for Search, checks which fields are entered. Concert Name can search patterns. The rest have to be exact inputs
+     * E.g. "a", "The", "Damn" will all return searches for 'The Damn Tour"
+     * @return SQL query in a String
+     */
     private String constructQuery() {
         StringBuffer sql = new StringBuffer("SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE" +
                 " FROM HOLDTICKETS H, SELLS S, CONCERT C" +
@@ -247,6 +265,9 @@ public class ReserveTicketsController extends AbstractController {
         return sql.toString();
     }
 
+    /**
+     * Displays pop-up box with information requested from query or changes table data for lowest cost query
+     */
     private void showAggregationQueries(){
         String sql = "";
         if (aggregationOptions.getValue() != null) {
@@ -276,8 +297,6 @@ public class ReserveTicketsController extends AbstractController {
                         "GROUP BY C1.CONC_NAME)";
                 ResultSet rs = DatabaseManager.sendQuery(sql);
                 displayConcertAlert(rs, true);
-
-
             } else if (optionChoosen.equals("Show Concert with Lowest Avg Ticket Prices")) {
                 sql = "SELECT C.CONC_NAME, AVG(H.COST) " +
                         "FROM HOLDTICKETS H, SELLS S, CONCERT C " +
@@ -298,6 +317,10 @@ public class ReserveTicketsController extends AbstractController {
     }
 
 
+    /**
+     * Displays alert box for number of concerts
+     * @param rs           ResultSet rs to parse data from
+     */
     private void displayNumberAlert(ResultSet rs) {
         int numberOfConcerts = 0;
         try {
