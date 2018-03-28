@@ -84,6 +84,14 @@ public class ReserveTicketsController extends AbstractController {
 
     @FXML
     private void handleReserve(){
+        if (ticketIDField.getText().isEmpty()) {
+            Alert reserveAlert = new Alert(Alert.AlertType.ERROR);
+            reserveAlert.setTitle("Error Dialog");
+            reserveAlert.setHeaderText("Reserve Ticket");
+            reserveAlert.setContentText("Please make sure you click on the ticket you wish to reserve. Ticket ID does not exist.");
+            reserveAlert.showAndWait();
+        }
+
         String reserveTicket = "UPDATE HOLDTICKETS SET CUST_ID = " + "'" + User.getInstance().getGlobalID() + "'," + " AVAILABLE = 0 WHERE TICKET_ID = '" + ticketIDField.getText() + "'";
         System.out.println(reserveTicket);
         DatabaseManager.sendUpdate(reserveTicket);
@@ -247,7 +255,8 @@ public class ReserveTicketsController extends AbstractController {
                 // Returns 1 column (int) representing # of concerts
                 sql = "SELECT COUNT(DISTINCT CONC_NAME) FROM HOLDTICKETS H, SELLS S, CONCERT C " +
                         "WHERE S.CONC_ID = C.CONC_ID AND S.TICKET_ID = H.TICKET_ID AND H.available = 1";
-
+                ResultSet rs = DatabaseManager.sendQuery(sql);
+                displayNumberAlert(rs);
             } else if (optionChoosen.equals("Show Ticket(s) with Lowest Cost")) {
                 // Returns same # of columns as Tableview. Set data and display it there instead of pop-up box
                 sql = "SELECT C.CONC_NAME, H.TICKET_ID, H.SEAT_NUM, H.COST, H.VIP, H.V_NAME, H.START_DATE FROM HOLDTICKETS H, SELLS S, CONCERT C "
@@ -255,8 +264,6 @@ public class ReserveTicketsController extends AbstractController {
                         "(SELECT MIN(COST) FROM HOLDTICKETS WHERE AVAILABLE = 1)";
                 ResultSet rs = DatabaseManager.sendQuery(sql);
                 setTicketTableData(rs);
-                DatabaseManager.closeStatement();
-
             } else if (optionChoosen.equals("Show Concert With Highest Avg Ticket Prices")) {
                 sql = "SELECT C.CONC_NAME, AVG(H.COST) " +
                         "FROM HOLDTICKETS H, SELLS S, CONCERT C " +
@@ -267,6 +274,9 @@ public class ReserveTicketsController extends AbstractController {
                         "FROM HOLDTICKETS H1, SELLS S1, CONCERT C1 " +
                         "WHERE S1.CONC_ID = C1.CONC_ID AND S1.TICKET_ID = H1.TICKET_ID AND H1.AVAILABLE = 1 " +
                         "GROUP BY C1.CONC_NAME)";
+                ResultSet rs = DatabaseManager.sendQuery(sql);
+                displayConcertAlert(rs, true);
+
 
             } else if (optionChoosen.equals("Show Concert with Lowest Avg Ticket Prices")) {
                 sql = "SELECT C.CONC_NAME, AVG(H.COST) " +
@@ -278,8 +288,63 @@ public class ReserveTicketsController extends AbstractController {
                         "FROM HOLDTICKETS H1, SELLS S1, CONCERT C1 " +
                         "WHERE S1.CONC_ID = C1.CONC_ID AND S1.TICKET_ID = H1.TICKET_ID AND H1.AVAILABLE = 1 " +
                         "GROUP BY C1.CONC_NAME)";
+                ResultSet rs = DatabaseManager.sendQuery(sql);
+                displayConcertAlert(rs, false);
             }
             System.out.println(sql);
         }
+        DatabaseManager.closeStatement();
+
+    }
+
+
+    private void displayNumberAlert(ResultSet rs) {
+        int numberOfConcerts = 0;
+        try {
+            while (rs.next()) {
+                numberOfConcerts = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Connection Failed! Check output console");
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText("Advanced Search Information");
+        alert.setContentText("There are currently " + numberOfConcerts + " concerts you could purchase tickets for.");
+        alert.showAndWait();
+    }
+
+
+    /**
+     * Displays alert box for avg concert price (max and min)
+     * @param rs            ResultSet rs to parse data from
+     * @param isMaxAvg      true for displaying Highest Avg Ticket Price, false o/w
+     */
+    private void displayConcertAlert(ResultSet rs, boolean isMaxAvg) {
+        String temp = "";
+        if (isMaxAvg) {
+            temp = "highest";
+        } else {
+            temp = "lowest";
+        }
+        String concertName = "";
+        int cost = 0;
+        try {
+            while (rs.next()) {
+                concertName = rs.getString(1);
+                cost = rs.getInt(2);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Connection Failed! Check output console");
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText("Advanced Search Information");
+        alert.setContentText(concertName + " has the " + temp + " average ticket prices. The average ticket price for this concert is $" + cost + ".");
+        alert.showAndWait();
     }
 }
+
+
