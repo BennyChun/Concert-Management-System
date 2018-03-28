@@ -93,5 +93,3 @@ CREATE TABLE concert_manager (
 )
 
 grant select on concert_manger to public;
-
-Concert Name, ticket id, seat, price, vip , venue, date
