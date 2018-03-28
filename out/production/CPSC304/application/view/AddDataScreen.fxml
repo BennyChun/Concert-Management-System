@@ -86,7 +86,7 @@
          </children>
       </GridPane>
         <JFXButton layoutX="7.0" layoutY="2.0" onAction="#handleBack" text="Back" />
-      <GridPane fx:id="ticketGrid" layoutX="8.0" layoutY="82.0" prefHeight="300.0" prefWidth="584.0">
+      <GridPane fx:id="ticketGrid" layoutX="8.0" layoutY="82.0" prefHeight="300.0" prefWidth="584.0" visible="false">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.71429443359375" minWidth="10.0" prefWidth="86.4285888671875" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.71429443359375" minWidth="10.0" prefWidth="277.14288330078125" />

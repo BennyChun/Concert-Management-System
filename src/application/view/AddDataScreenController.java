@@ -198,17 +198,29 @@ public class AddDataScreenController extends AbstractController {
 
         String concertIDgiven = "'" + concertIDField.getText() + "'";
 
+
         // check if concert field not empty   // check is there is a concert with concert id given
 
+        if (concertIDField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You need to input a Concert ID!");
+
+            errorAlert.showAndWait();
+            return;
+        }
 
         if (!(concertIDField.getText().length() == 5)){
 
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error Dialog");
-            errorAlert.setHeaderText("Can't delete Concert");
-            errorAlert.setContentText("You did not input a correct concert id.");
+            errorAlert.setHeaderText("Wrong Concert ID");
+            errorAlert.setContentText(concertIDgiven + " is not a correct concert ID.");
 
             errorAlert.showAndWait();
+            return;
         }
 
         if (!checkIfConcertExists(concertIDgiven)){
@@ -216,7 +228,7 @@ public class AddDataScreenController extends AbstractController {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error Dialog");
             errorAlert.setHeaderText("Can't delete Concert");
-            errorAlert.setContentText("There is no concert with this concert id.");
+            errorAlert.setContentText("There is not Concert with this concert ID: " + concertIDgiven);
 
             errorAlert.showAndWait();
         }
@@ -228,7 +240,7 @@ public class AddDataScreenController extends AbstractController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Delete Concert");
-            alert.setContentText("Are you sure you want to delete this concert?");
+            alert.setContentText("Are you sure you want to delete the Concert with is ID: " + concertIDgiven + " ?");
 
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -243,8 +255,8 @@ public class AddDataScreenController extends AbstractController {
 
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Information Dialog");
-                successAlert.setHeaderText("Update Customer Details");
-                successAlert.setContentText("Concert was deleted successfully!");
+                successAlert.setHeaderText("Updated Concert Details");
+                successAlert.setContentText("Concert with ID: " + concertIDgiven +  " was deleted successfully!");
 
                 successAlert.showAndWait();
             }
@@ -257,13 +269,19 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleConcertUpdate(){
-        String concertIDgiven = "'" + concertIDField.getText() + "'";
-        String updateConcertName = "'" + concertNameField.getText()+ "'";
-        int updateDuration = Integer.parseInt(durationField.getText());
-        String startDate = startDateField.getValue().toString();
-        startDate = startDate.replaceAll("-", "/");
-        String updateStartDate = "'" + startDate + "'";
-        int is19Plus = trueOrFalseChecker(is19PlusField.getValue());
+        String concertIDgiven ="";
+        if (!concertIDField.getText().isEmpty())
+            concertIDgiven = "'" + concertIDField.getText() + "'";
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Concert ID is not valid");
+            alert.setContentText("Please enter a valid concert ID. Concert ID cannot be blank");
+            alert.showAndWait();
+            return;
+
+        }
+
 
         if (checkIfConcertExists(concertIDgiven) == true) { // update/modify customer
             if(isValidConcert()) {
@@ -273,6 +291,12 @@ public class AddDataScreenController extends AbstractController {
                 updateAlert.setContentText("Are you sure the details are correct?");
                 Optional<ButtonType> result = updateAlert.showAndWait();
                 if (result.get() == ButtonType.OK) {
+                    String updateConcertName = "'" + concertNameField.getText()+ "'";
+                    int updateDuration = Integer.parseInt(durationField.getText());
+                    String startDate = startDateField.getValue().toString();
+                    startDate = startDate.replaceAll("-", "/");
+                    String updateStartDate = "'" + startDate + "'";
+                    int is19Plus = trueOrFalseChecker(is19PlusField.getValue());
                     String sql = "update concert set " +"conc_id = " + concertIDgiven + ", "+ "conc_name = " + updateConcertName + ", "+ "duration = " + updateDuration + ", "
                             +"startDate = " +updateStartDate+ ", " + "adults_only = "+ is19Plus +" where conc_id = " +concertIDgiven;
                     DatabaseManager.sendUpdate(sql);
@@ -294,6 +318,13 @@ public class AddDataScreenController extends AbstractController {
                 addAlert.setContentText("Are you sure the details are correct?");
                 Optional<ButtonType> result = addAlert.showAndWait();
                 if (result.get() == ButtonType.OK) {
+                    String updateConcertName = "'" + concertNameField.getText()+ "'";
+                    int updateDuration = Integer.parseInt(durationField.getText());
+                    String startDate = startDateField.getValue().toString();
+                    startDate = startDate.replaceAll("-", "/");
+                    String updateStartDate = "'" + startDate + "'";
+                    int is19Plus = trueOrFalseChecker(is19PlusField.getValue());
+
                     String sql = "insert into concert values " + "(" + concertIDgiven + ", " + updateConcertName + ", " + updateDuration + ", "
                             + updateStartDate + ", " + is19Plus +  ")";
                     System.out.println(sql);
@@ -349,9 +380,76 @@ public class AddDataScreenController extends AbstractController {
 //================================================================================================================
 
 
-
     @FXML
     private void handleTicketDelete(){
+
+        String ticketIDgiven = "'" + ticketIDField.getText() + "'";
+
+        // check if concert field not empty   // check is there is a concert with concert id given
+
+        if (ticketIDField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information!");
+            errorAlert.setContentText(ticketIDgiven + " is not a correct Ticket ID.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (!(ticketIDField.getText().length() == 10)){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Can't delete Ticket");
+            errorAlert.setContentText("You did not input a correct Ticket ID!");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (!checkIfTicketExists(ticketIDgiven)){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Can't delete Ticket");
+            errorAlert.setContentText("There is not ticket with this Ticket ID: " + ticketIDgiven + " !");
+
+            errorAlert.showAndWait();
+        }
+
+
+
+        if (checkIfTicketExists(ticketIDgiven)) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Delete Ticket");
+            alert.setContentText("Are you sure you want to delete the ticket with this ID : " + ticketIDgiven+" ?");
+
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+
+                String sql = "delete from holdtickets where ticket_id =" + ticketIDgiven;
+                int rowCount = DatabaseManager.sendUpdate(sql);
+                System.out.println(rowCount);
+                System.out.println(ticketIDgiven);
+
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Updated Ticket Details");
+                successAlert.setContentText("Ticket with Ticket ID" + ticketIDgiven +  "was deleted successfully!");
+
+                successAlert.showAndWait();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
+
 
     }
 
@@ -359,7 +457,16 @@ public class AddDataScreenController extends AbstractController {
     private void handleTicketUpdate(){
         String ticketIDGiven ="";
         if (!ticketIDField.getText().isEmpty())
-             ticketIDGiven = "'" + ticketIDField.getText() + "'";
+            ticketIDGiven = "'" + ticketIDField.getText() + "'";
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Ticket ID is not valid");
+            alert.setContentText("Please enter a valid ticket ID. Ticket ID cannot be blank");
+            alert.showAndWait();
+            return;
+
+        }
 
         if (checkIfTicketExists(ticketIDGiven)) { // update/modify customer
             if(isValidTicket()) {
@@ -384,10 +491,18 @@ public class AddDataScreenController extends AbstractController {
                     String updateStartDate = "'" + startDate + "'";
                     int updateAvailable = trueOrFalseChecker(isAvailableField.getValue());
 
-                    String sql = "update holdtickets set " + "seat_num = " + updateSeatNumber +", " + "start_date = "+ updateStartDate + ", "
-                            + "vip = " + updateVIP + ", "  +"cost = " + cost + ", " + "city = "+ updateTicketCity + ", " + "v_name = " + updateTicketVenueName +
-                            ", " + "cust_id = " + updateCustomerID +", " + "available = "+ updateAvailable +" where ticket_id = " +ticketIDGiven;
-                    DatabaseManager.sendUpdate(sql);
+                    if (ticketCustIDField.getText().isEmpty()) {
+                        String sql = "update holdtickets set " + "seat_num = " + updateSeatNumber + ", " + "start_date = " + updateStartDate + ", "
+                                + "vip = " + updateVIP + ", " + "cost = " + cost + ", " + "city = " + updateTicketCity + ", " + "v_name = " + updateTicketVenueName +
+                                ", " + "cust_id = " + "NULL" + ", " + "available = " + updateAvailable + " where ticket_id = " + ticketIDGiven;
+                        DatabaseManager.sendUpdate(sql);
+                    } else{
+                        String sql = "update holdtickets set " + "seat_num = " + updateSeatNumber + ", " + "start_date = " + updateStartDate + ", "
+                                + "vip = " + updateVIP + ", " + "cost = " + cost + ", " + "city = " + updateTicketCity + ", " + "v_name = " + updateTicketVenueName +
+                                ", " + "cust_id = " + updateCustomerID + ", " + "available = " + updateAvailable + " where ticket_id = " + ticketIDGiven;
+                        DatabaseManager.sendUpdate(sql);
+
+                    }
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                     successAlert.setTitle("Information Dialog");
@@ -565,14 +680,96 @@ public class AddDataScreenController extends AbstractController {
     @FXML
     private void handleVenueDelete(){
 
+
+        String venueNamegiven = "'" + venueNameField.getText() + "'";
+        String venueCitygiven = "'" + cityField.getText() + "'";
+
+        // check if concert field not empty   // check is there is a concert with concert id given
+
+
+        if (venueNameField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You need to input a Venue's Name and City.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (cityField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You did not input the City the Venue: " + venueNamegiven + " is in.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (!checkIfVenueExists(venueNamegiven, venueCitygiven)){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Can't delete Venue");
+            errorAlert.setContentText("There is no such Venue: " + venueNamegiven + " in " + venueCitygiven +" !");
+
+            errorAlert.showAndWait();
+        }
+
+
+
+        if (checkIfVenueExists(venueNamegiven, venueCitygiven)) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Delete Venue");
+            alert.setContentText("Are you sure you want to delete this venue: " + venueNamegiven + " in " + venueCitygiven +" ?");
+
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+
+                String sql = "delete from venue where v_name =" + venueNamegiven;
+                int rowCount = DatabaseManager.sendUpdate(sql);
+                System.out.println(rowCount);
+                System.out.println(venueNamegiven);
+
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Updated Venue Details");
+                successAlert.setContentText("Venue was deleted successfully!");
+
+                successAlert.showAndWait();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
     }
 
     @FXML
     private void handleVenueUpdate(){
-        String venueNameGiven = "'" + venueNameField.getText() + "'";
-        String venueCityGiven = "'" + cityField.getText() + "'";
-        String updateCapacity = "'" + capacityField.getText()+ "'";
-        String updateAddress = "'" + streetAddressField.getText()+ "'";
+
+        String venueNameGiven ="";
+        String venueCityGiven ="";
+        if (!venueNameField.getText().isEmpty() || cityField.getText().isEmpty()) {
+            venueNameGiven = "'" + venueNameField.getText() + "'";
+            venueCityGiven = "'" + cityField.getText() + "'";
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Venue name or city is not valid");
+            alert.setContentText("Please enter a valid venue name or city cannot be blank");
+            alert.showAndWait();
+            return;
+
+        }
+
+
         if (checkIfVenueExists(venueNameGiven, venueCityGiven)) { // update/modify customer
             if(isValidVenue()) {
                 Alert updateAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -581,6 +778,8 @@ public class AddDataScreenController extends AbstractController {
                 updateAlert.setContentText("Are you sure your details are correct?");
                 Optional<ButtonType> result = updateAlert.showAndWait();
                 if (result.get() == ButtonType.OK) {
+                    String updateCapacity = "'" + capacityField.getText()+ "'";
+                    String updateAddress = "'" + streetAddressField.getText()+ "'";
                     String sql = "update venue set " +"v_name = " + venueNameGiven + ", "+ "city = " + venueCityGiven + ", "+ "capacity = " + updateCapacity + ", "
                             +"street_addr = " +updateAddress+" where v_name = " +venueNameGiven + " and city = " + venueCityGiven;
                     System.out.println(sql);
@@ -603,6 +802,8 @@ public class AddDataScreenController extends AbstractController {
                 addAlert.setContentText("Are you sure your details are correct?");
                 Optional<ButtonType> result = addAlert.showAndWait();
                 if (result.get() == ButtonType.OK) {
+                    String updateCapacity = "'" + capacityField.getText()+ "'";
+                    String updateAddress = "'" + streetAddressField.getText()+ "'";
                     //int capacity = Integer.parseInt(capacityField.getText().toString());
                     String sql = "insert into venue values " + "(" + venueNameGiven + ", " + venueCityGiven + ", " + updateCapacity + ", "
                             + updateAddress + ")";
@@ -675,6 +876,62 @@ public class AddDataScreenController extends AbstractController {
     @FXML
     private void handleBandDelete(){
 
+        String BandNamegiven = "'" + stageNameField.getText() + "'";
+
+        // check if concert field not empty   // check is there is a concert with concert id given
+
+
+        if (stageNameField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You did not input a band name.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (!checkIfBandExists(BandNamegiven)){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Wrong Band Name");
+            errorAlert.setContentText("There is no band with this band name: " + BandNamegiven + " !");
+
+            errorAlert.showAndWait();
+        }
+
+
+
+        if (checkIfBandExists(BandNamegiven)) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Delete Band");
+            alert.setContentText("Are you sure you want to delete this band: " + BandNamegiven + " ?");
+
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+
+                String sql = "delete from band where stage_name =" + BandNamegiven;
+                int rowCount = DatabaseManager.sendUpdate(sql);
+                System.out.println(rowCount);
+                System.out.println(BandNamegiven);
+
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Updated Band Details");
+                successAlert.setContentText("Band was deleted successfully!");
+
+                successAlert.showAndWait();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
     }
 
 
@@ -683,17 +940,118 @@ public class AddDataScreenController extends AbstractController {
 
     }
 
+    private boolean checkIfBandExists(String BandName){
+
+        String sql = "select stage_name from band where stage_name = " + BandName;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+
+        try {
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
+    }
 
 //================================================================================================================
 
     @FXML
     private void handleArtistDelete(){
 
+
+        String ArtistNamegiven = "'" + artistNameField.getText() + "'";
+        String StageNamegiven = "'" + artistStageNamePicker.getValue() + "'";
+
+
+        if (artistNameField.getText().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You did not input an artist name.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (artistStageNamePicker.getValue().length() == 0){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Missing Information");
+            errorAlert.setContentText("You need to input" + artistNameField.getText()+ "'s stage name.");
+
+            errorAlert.showAndWait();
+            return;
+        }
+
+        if (!checkIfArtistExists(ArtistNamegiven, StageNamegiven)){
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error Dialog");
+            errorAlert.setHeaderText("Wrong Artist Name or Stage Name");
+            errorAlert.setContentText("There is no artist with the following artist name and stage name: " + ArtistNamegiven+ " " + StageNamegiven + " !");
+
+            errorAlert.showAndWait();
+        }
+
+
+
+        if (checkIfArtistExists(ArtistNamegiven, StageNamegiven)) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Delete Artist");
+            alert.setContentText("Are you sure you want to delete this artist: " + ArtistNamegiven + ",  " + StageNamegiven + " ?");
+
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+
+                String sql = "delete from artist_partof where a_name =" + ArtistNamegiven;
+                int rowCount = DatabaseManager.sendUpdate(sql);
+                System.out.println(rowCount);
+                System.out.println(ArtistNamegiven);
+
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Updated Artist Details");
+                successAlert.setContentText("Artist: " + ArtistNamegiven + " with Stage Name: " + StageNamegiven + " was deleted successfully!");
+
+                successAlert.showAndWait();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
     }
 
     @FXML
     private void handleArtistUpdate(){
 
+    }
+
+
+    private boolean checkIfArtistExists(String ArtistName, String StageName){
+
+        String sql = "select a_name from artist_partof where a_name = " + ArtistName + "and stage_name = " + StageName;
+        ResultSet rs = DatabaseManager.sendQuery(sql);
+
+        try {
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DatabaseManager.closeStatement();
+        return false;
     }
 
 //================================================================================================================
