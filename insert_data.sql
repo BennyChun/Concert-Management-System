@@ -58,6 +58,18 @@ INSERT INTO BAND VALUES
 INSERT INTO BAND VALUES
 ('Kendrick Lamar', 'Rap', '2007/09/01');
 
+INSERT INTO BAND VALUES
+('Ed Sheeran', 'Pop', '2010/01/01');
+
+INSERT INTO ARTIST_PARTOF VALUES 
+('Ed Sheeran', 'United States', '1990/11/25', 'Ed Sheeran');
+
+INSERT INTO BAND VALUES
+('Jay Z', 'Rap', '2000/03/01');
+
+INSERT INTO ARTIST_PARTOF VALUES 
+('Shawn Corey Carter', 'United States', '1969/04/25', 'Jay Z');
+
 INSERT INTO ARTIST_PARTOF VALUES 
 ('Aubrey Drake Graham', 'Canada', '1986/10/24', 'Drake');
 

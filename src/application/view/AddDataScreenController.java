@@ -104,7 +104,7 @@ public class AddDataScreenController extends AbstractController {
 
     private void setArtistNamePicker() {
         ObservableList<String> stageNames= FXCollections.observableArrayList();
-        String sql = "select a_name from artist_partof";
+        String sql = "select stage_name from band";
         ResultSet rs = DatabaseManager.sendQuery(sql);
         try {
             while (rs.next()) {
@@ -198,7 +198,6 @@ public class AddDataScreenController extends AbstractController {
 
         String concertIDgiven = "'" + concertIDField.getText() + "'";
 
-
         // check if concert field not empty   // check is there is a concert with concert id given
 
         if (concertIDField.getText().length() == 0){
@@ -249,10 +248,6 @@ public class AddDataScreenController extends AbstractController {
 
                 String sql = "delete from concert where conc_id =" + concertIDgiven;
                 int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(concertIDgiven);
-
-
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Information Dialog");
                 successAlert.setHeaderText("Updated Concert Details");
@@ -327,7 +322,6 @@ public class AddDataScreenController extends AbstractController {
 
                     String sql = "insert into concert values " + "(" + concertIDgiven + ", " + updateConcertName + ", " + updateDuration + ", "
                             + updateStartDate + ", " + is19Plus +  ")";
-                    System.out.println(sql);
                     DatabaseManager.sendUpdate(sql);
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -435,10 +429,6 @@ public class AddDataScreenController extends AbstractController {
 
                 String sql = "delete from holdtickets where ticket_id =" + ticketIDgiven;
                 int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(ticketIDgiven);
-
-
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Information Dialog");
                 successAlert.setHeaderText("Updated Ticket Details");
@@ -576,8 +566,7 @@ public class AddDataScreenController extends AbstractController {
                          sellsSQL = "insert into sells values " + "(" + updateConcertID + ", " + ticketIDGiven + ")";
 
                     }
-                    System.out.println(ticketSQL);
-                    System.out.println(sellsSQL);
+
                     DatabaseManager.sendUpdate(ticketSQL);
                     DatabaseManager.sendUpdate(sellsSQL);
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -735,8 +724,7 @@ public class AddDataScreenController extends AbstractController {
 
                 String sql = "delete from venue where v_name =" + venueNamegiven;
                 int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(venueNamegiven);
+
 
 
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -782,7 +770,6 @@ public class AddDataScreenController extends AbstractController {
                     String updateAddress = "'" + streetAddressField.getText()+ "'";
                     String sql = "update venue set " +"v_name = " + venueNameGiven + ", "+ "city = " + venueCityGiven + ", "+ "capacity = " + updateCapacity + ", "
                             +"street_addr = " +updateAddress+" where v_name = " +venueNameGiven + " and city = " + venueCityGiven;
-                    System.out.println(sql);
                     DatabaseManager.sendUpdate(sql);
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -807,7 +794,6 @@ public class AddDataScreenController extends AbstractController {
                     //int capacity = Integer.parseInt(capacityField.getText().toString());
                     String sql = "insert into venue values " + "(" + venueNameGiven + ", " + venueCityGiven + ", " + updateCapacity + ", "
                             + updateAddress + ")";
-                    System.out.println(sql);
                     DatabaseManager.sendUpdate(sql);
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -826,7 +812,6 @@ public class AddDataScreenController extends AbstractController {
     private boolean checkIfVenueExists(String venueName, String venueCity){
 
         String sql = "select v_name, city from venue where v_name = " + venueName +" and city = " + venueCity;
-        System.out.println(sql);
         ResultSet rs = DatabaseManager.sendQuery(sql);
         try {
             if (rs.next()) {
@@ -853,8 +838,6 @@ public class AddDataScreenController extends AbstractController {
         if(streetAddressField.getText() == null || streetAddressField.getText().length() == 0) {
             errorMessage += "Not a valid street address!\n";
         }
-
-
         if (errorMessage.length() == 0) {
             return true;
         } else {
@@ -875,150 +858,176 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleBandDelete(){
+        Alert delAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        delAlert.setTitle("Confirmation Dialog");
+        delAlert.setHeaderText("Delete Concert");
+        delAlert.setContentText("Are you sure you want to delete this concert?");
+        Optional<ButtonType> result = delAlert.showAndWait();
 
-        String BandNamegiven = "'" + stageNameField.getText() + "'";
-
-        // check if concert field not empty   // check is there is a concert with concert id given
-
-
-        if (stageNameField.getText().length() == 0){
-
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error Dialog");
-            errorAlert.setHeaderText("Missing Information");
-            errorAlert.setContentText("You did not input a band name.");
-
-            errorAlert.showAndWait();
-            return;
-        }
-
-        if (!checkIfBandExists(BandNamegiven)){
-
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error Dialog");
-            errorAlert.setHeaderText("Wrong Band Name");
-            errorAlert.setContentText("There is no band with this band name: " + BandNamegiven + " !");
-
-            errorAlert.showAndWait();
-        }
-
-
-
-        if (checkIfBandExists(BandNamegiven)) {
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Delete Band");
-            alert.setContentText("Are you sure you want to delete this band: " + BandNamegiven + " ?");
-
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.get() == ButtonType.OK) {
-
-                String sql = "delete from band where stage_name =" + BandNamegiven;
-                int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(BandNamegiven);
-
-
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Information Dialog");
-                successAlert.setHeaderText("Updated Band Details");
-                successAlert.setContentText("Band was deleted successfully!");
-
-                successAlert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            String stageName = stageNameField.getText();
+            if (!checkIfBandExists(stageName)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Fields");
+                alert.setHeaderText("Stage name does not exist");
+                alert.setContentText("Please enter a valid stage name in order to delete band");
+                alert.showAndWait();
             } else {
-                // ... user chose CANCEL or closed the dialog
+                String deleteSQL = "DELETE FROM BAND WHERE STAGE_NAME = '" + stageNameField.getText() + "'";
+                int num = DatabaseManager.sendUpdate(deleteSQL);
+                if (num > 0) {
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Delete Band");
+                    successAlert.setContentText("Band was deleted successfully!");
+                    successAlert.showAndWait();
+                }
             }
         }
     }
-
 
     @FXML
     private void handleBandUpdate(){
+        // If band exists then update genre and formation if it exists
+        String stageName = stageNameField.getText();
+
+        if (checkIfBandExists(stageName)) {
+            String genre = "";
+            boolean hasValidGenre = false;
+            String formDate = "";
+            boolean hasDate = false;
+            if (!genreField.getText().isEmpty() && genreField.getText().length() <= 30) {
+                genre = genreField.getText();
+                hasValidGenre = true;
+            }
+            if (formationDateField.getValue() != null) {
+                formDate = formationDateField.getValue().toString().replaceAll("-", "/");
+                hasDate = true;
+            }
+            String sql = "";
+            if (hasDate && hasValidGenre) {
+                sql = "update band set genre = '" + genre + "'" + ", form_date = '" + formDate
+                        + "' where stage_name = '" +  stageName + "'";
+            } else if (hasDate && !hasValidGenre) {
+                sql = "update band set form_date = '" + formDate + "'" + " where stage_name = '" +
+                        stageName + "'";
+            } else if (!hasDate && hasValidGenre) {
+                sql = "update band set genre = '" + genre + "'" + " where stage_name = '" +  stageName + "'";
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Update Fields");
+                alert.setHeaderText("No new updates");
+                alert.setContentText("Please add new values to update. There exists nothing new to update.");
+                alert.showAndWait();
+            }
+            int num = DatabaseManager.sendUpdate(sql);
+
+            if (num > 0) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Information Dialog");
+                successAlert.setHeaderText("Updated Band");
+                successAlert.setContentText("Band was updated successfully!");
+                successAlert.showAndWait();
+            }
+        } else {
+            if (stageName.length() > 0 && stageName.length() <= 30) {
+                String genre = "";
+                boolean hasValidGenre = false;
+                String formDate = "";
+                boolean hasDate = false;
+                if (!genreField.getText().isEmpty() && genreField.getText().length() <= 30) {
+                    genre = genreField.getText();
+                    hasValidGenre = true;
+                }
+                if (formationDateField.getValue() != null) {
+                    formDate = formationDateField.getValue().toString().replaceAll("-", "/");
+                    hasDate = true;
+                }
+                String insertSQL = "";
+                if (hasDate && hasValidGenre) {
+                    insertSQL = "insert into band values ('" + stageName + "', '" + genre + "', '" + formDate + "')";
+                } else if (hasDate && !hasValidGenre) {
+                    insertSQL = "insert into band values ('" + stageName + "', " + "NULL" + ", '" + formDate + "')";
+                } else if (!hasDate && hasValidGenre) {
+                    insertSQL = "insert into band values ('" + stageName + "', '" + genre + "', " + "NULL" + ")";
+                } else {
+                    insertSQL = "insert into band values ('" + stageName + "', " + "NULL" + ", " + "NULL" + ")";
+                }
+                int num = DatabaseManager.sendUpdate(insertSQL);
+                if (num > 0) {
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Inserted Band");
+                    successAlert.setContentText("Band was inserted successfully!");
+                    successAlert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Update Fields");
+                alert.setHeaderText("Invalid Stage Name");
+                alert.setContentText("Please add a valid stage name in order to add a band.");
+                alert.showAndWait();
+            }
+        }
 
     }
 
-    private boolean checkIfBandExists(String BandName){
-
-        String sql = "select stage_name from band where stage_name = " + BandName;
-        ResultSet rs = DatabaseManager.sendQuery(sql);
-
-        try {
-            if (rs.next()) {
-                return true;
+    private boolean checkIfBandExists (String stageName) {
+        if (!stageName.isEmpty()) {
+            String sql = "select stage_name from band where stage_name = '" + stageName + "'";
+            ResultSet rs = DatabaseManager.sendQuery(sql);
+            try {
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        DatabaseManager.closeStatement();
         return false;
     }
-
 //================================================================================================================
 
     @FXML
     private void handleArtistDelete(){
-
-
         String ArtistNamegiven = "'" + artistNameField.getText() + "'";
         String StageNamegiven = "'" + artistStageNamePicker.getValue() + "'";
-
-
         if (artistNameField.getText().length() == 0){
-
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error Dialog");
             errorAlert.setHeaderText("Missing Information");
             errorAlert.setContentText("You did not input an artist name.");
-
             errorAlert.showAndWait();
             return;
         }
 
         if (artistStageNamePicker.getValue().length() == 0){
-
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error Dialog");
             errorAlert.setHeaderText("Missing Information");
             errorAlert.setContentText("You need to input" + artistNameField.getText()+ "'s stage name.");
-
             errorAlert.showAndWait();
             return;
         }
 
         if (!checkIfArtistExists(ArtistNamegiven, StageNamegiven)){
-
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error Dialog");
             errorAlert.setHeaderText("Wrong Artist Name or Stage Name");
             errorAlert.setContentText("There is no artist with the following artist name and stage name: " + ArtistNamegiven+ " " + StageNamegiven + " !");
-
             errorAlert.showAndWait();
         }
-
-
-
         if (checkIfArtistExists(ArtistNamegiven, StageNamegiven)) {
-
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Delete Artist");
             alert.setContentText("Are you sure you want to delete this artist: " + ArtistNamegiven + ",  " + StageNamegiven + " ?");
-
-
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
 
                 String sql = "delete from artist_partof where a_name =" + ArtistNamegiven;
                 int rowCount = DatabaseManager.sendUpdate(sql);
-                System.out.println(rowCount);
-                System.out.println(ArtistNamegiven);
-
-
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Information Dialog");
                 successAlert.setHeaderText("Updated Artist Details");
@@ -1033,40 +1042,114 @@ public class AddDataScreenController extends AbstractController {
 
     @FXML
     private void handleArtistUpdate(){
+        if (!artistNameField.getText().isEmpty() && artistStageNamePicker.getValue() != null) {
+            String stageName = artistStageNamePicker.getValue().toString();
+            String artistName = artistNameField.getText();
+            // Update if exists
+            if (checkIfArtistExists("'"+artistName+"'", "'"+stageName+"'")) {
+                String country = "";
+                String birth = "";
+                boolean hasCountry = false;
+                boolean hasBirth = false;
 
-    }
+                if (!originField.getText().isEmpty() && originField.getText().length() <= 20) {
+                    country = originField.getText();
+                    hasCountry = true;
+                }
+                if (artistDateOfBirthField.getValue() != null) {
+                    birth = artistDateOfBirthField.getValue().toString().replaceAll("-", "/");
+                    hasBirth = true;
+                }
 
+                String sql = "";
+                if (hasBirth && hasCountry) {
+                    sql = "update artist_partof set country = '" + country + "', birth = '" + birth + "'" +
+                            " where stage_name = '" + stageName + "' and a_name = '" + artistName + "'";
+                } else if (hasBirth && !hasCountry) {
+                    sql = "update artist_partof set " + "birth = '" + birth + "'" +
+                            " where stage_name = '" + stageName + "' and a_name = '" + artistName + "'";
+                } else if (!hasBirth && hasCountry) {
+                    sql = "update artist_partof set country = '" + country + "'"+
+                            " where stage_name = '" + stageName + "' and a_name = '" + artistName + "'";
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Update Fields");
+                    alert.setHeaderText("No new updates for Artist");
+                    alert.setContentText("Please add new values to update. There exists nothing new to update.");
+                    alert.showAndWait();
+                }
+                int num = DatabaseManager.sendUpdate(sql);
 
-    private boolean checkIfArtistExists(String ArtistName, String StageName){
-
-        String sql = "select a_name from artist_partof where a_name = " + ArtistName + "and stage_name = " + StageName;
-        ResultSet rs = DatabaseManager.sendQuery(sql);
-
-        try {
-            if (rs.next()) {
-                return true;
+                if (num > 0) {
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Information Dialog");
+                    successAlert.setHeaderText("Updated Artist");
+                    successAlert.setContentText("Artist was updated successfully!");
+                    successAlert.showAndWait();
+                }
+            } else {
+                if (artistName.length() > 0 && artistName.length() <= 30) {
+                    String country = "";
+                    String birth = "";
+                    boolean hasCountry = false;
+                    boolean hasBirth = false;
+                    if (!originField.getText().isEmpty() && originField.getText().length() <= 20) {
+                        country = originField.getText();
+                        hasCountry = true;
+                    }
+                    if (artistDateOfBirthField.getValue() != null) {
+                        birth = artistDateOfBirthField.getValue().toString().replaceAll("-", "/");
+                        hasBirth = true;
+                    }
+                    String insertSQL = "";
+                    if (hasBirth && hasCountry) {
+                        insertSQL = "insert into artist_partof values ('" + artistName + "', '" + country + "', '" + birth
+                                + "', '" + stageName + "')";
+                    } else if (hasBirth && !hasCountry) {
+                        insertSQL = "insert into artist_partof values ('" + artistName + "', " + "NULL" + ", '" + birth
+                                + "', '" + stageName + "')";
+                    } else if (!hasBirth && hasCountry) {
+                        insertSQL = "insert into artist_partof values ('" + artistName + "', '" + country + "', " + "NULL"
+                                + ", '" + stageName + "')";
+                    } else {
+                        insertSQL = "insert into artist_partof values ('" + artistName + "', " + "NULL" + ", " + "NULL"
+                                + ", '" + stageName + "')";
+                    }
+                    int num = DatabaseManager.sendUpdate(insertSQL);
+                    if (num > 0) {
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Information Dialog");
+                        successAlert.setHeaderText("Inserted Artist");
+                        successAlert.setContentText("Artist was inserted successfully!");
+                        successAlert.showAndWait();
+                    }
+                }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Update Fields");
+            alert.setHeaderText("Invalid Artist Info");
+            alert.setContentText("Please make sure artist name and stage name are not empty.");
+            alert.showAndWait();
         }
-        DatabaseManager.closeStatement();
-        return false;
     }
 
-//================================================================================================================
+    private boolean checkIfArtistExists(String artistName, String stageName) {
+        if (!artistName.isEmpty() && !stageName.isEmpty()) {
+            String sql = "select a_name from artist_partof where a_name = " + artistName +
+                    " and stage_name = " + stageName;
+            ResultSet rs = DatabaseManager.sendQuery(sql);
+            try {
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
 
-
-
-
-
-
-
-
-
-
-
-
+    }
 
     @FXML
     private void handleBack(){
