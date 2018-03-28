@@ -110,6 +110,7 @@ public class AddDataScreenController extends AbstractController {
         artistGrid.setVisible(true);
     }
 
+//================================================================================================================
 
     private boolean checkIfConcertExists(String concertID){
 
@@ -193,28 +194,14 @@ public class AddDataScreenController extends AbstractController {
 }
 
     @FXML
-    private void handleTicketDelete(){
-
-    }
-
-    @FXML
-    private void handleVenueDelete(){
-
-    }
-
-    @FXML
-    private void handleBandDelete(){
-
-    }
-
-    @FXML
-    private void handleArtistDelete(){
-
-    }
-
-
-    @FXML
     private void handleConcertUpdate(){
+
+    }
+
+//================================================================================================================
+
+    @FXML
+    private void handleTicketDelete(){
 
     }
 
@@ -223,13 +210,36 @@ public class AddDataScreenController extends AbstractController {
 
     }
 
+//================================================================================================================
+
+    @FXML
+    private void handleVenueDelete(){
+
+    }
+
     @FXML
     private void handleVenueUpdate(){
 
     }
 
+//================================================================================================================
+
+    @FXML
+    private void handleBandDelete(){
+
+    }
+
+
     @FXML
     private void handleBandUpdate(){
+
+    }
+
+
+//================================================================================================================
+
+    @FXML
+    private void handleArtistDelete(){
 
     }
 
@@ -237,6 +247,19 @@ public class AddDataScreenController extends AbstractController {
     private void handleArtistUpdate(){
 
     }
+
+//================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
 
 
     @FXML
