@@ -292,6 +292,9 @@ public class AddDataScreenController extends AbstractController {
                     startDate = startDate.replaceAll("-", "/");
                     String updateStartDate = "'" + startDate + "'";
                     int is19Plus = trueOrFalseChecker(is19PlusField.getValue());
+
+
+
                     String sql = "update concert set " +"conc_id = " + concertIDgiven + ", "+ "conc_name = " + updateConcertName + ", "+ "duration = " + updateDuration + ", "
                             +"startDate = " +updateStartDate+ ", " + "adults_only = "+ is19Plus +" where conc_id = " +concertIDgiven;
                     DatabaseManager.sendUpdate(sql);
@@ -348,7 +351,7 @@ public class AddDataScreenController extends AbstractController {
         if (concertNameField.getText() == null || concertNameField.getText().length() == 0) {
             errorMessage += "Not a valid concert name!\n";
         }
-        if (durationField.getText() == null || durationField.getText().length() == 0 || Integer.parseInt(durationField.getText()) <= 0 ) {
+        if (Integer.parseInt(durationField.getText()) <= 0 ) {
                 errorMessage += "Not a valid duration!\n";
         }
         if(startDateField.getValue() == null || startDateField.getValue().toString().length() == 0) {
