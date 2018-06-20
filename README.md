@@ -1,5 +1,8 @@
 # CPSC304
-University of Britsh Columbiav \n
-CPSC 304 Project \n
-Concert Management System. \n
+University of Britsh Columbia
+
+CPSC 304 Project 
+
+Concert Management System. 
+
 A database application used to store and manipulate concert related data.
